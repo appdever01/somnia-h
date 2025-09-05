@@ -1,0 +1,72 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# State Management
+
+Somnia Pumpaz uses Redux Toolkit for state management across the application.
+
+## Redux Store
+
+The main Redux store is configured in [src/redux/store.ts](mdc:src/redux/store.ts), which combines multiple reducers:
+
+```typescript
+export default configureStore({
+  reducer: {
+    menuOpen: menuStateReducer,
+    dicePredictor: dicePredictionReducer,
+    diceStake: diceStakeReducer,
+    token: tokenReducer,
+    userAccount: userReducer,
+    staking: stakingReducer,
+    stakeOption: stakeOptionReducer,
+    stake_id: stakeIdReducer,
+    flipPrediction: flipPredictionReducer,
+    flipStake: flipStakeReducer,
+  },
+});
+```
+
+## Redux Providers
+
+The Redux Provider is set up in [src/redux/providers.tsx](mdc:src/redux/providers.tsx) to wrap the application with the Redux store.
+
+## Feature Slices
+
+The Redux store is organized into feature slices:
+
+- **Menu State**: [src/redux/menu/status.ts](mdc:src/redux/menu/status.ts)
+  - Controls the state of the navigation menu
+
+- **Coin Flip Game**:
+  - [src/redux/coinFlip/coinPrediction.ts](mdc:src/redux/coinFlip/coinPrediction.ts)
+  - [src/redux/coinFlip/coinStake.ts](mdc:src/redux/coinFlip/coinStake.ts)
+
+- **Dice Game**:
+  - [src/redux/diceGame/dicePrediction.ts](mdc:src/redux/diceGame/dicePrediction.ts)
+  - [src/redux/diceGame/diceStake.ts](mdc:src/redux/diceGame/diceStake.ts)
+
+- **Staking**:
+  - [src/redux/staking/stake.ts](mdc:src/redux/staking/stake.ts)
+  - [src/redux/staking/stakeOption.ts](mdc:src/redux/staking/stakeOption.ts)
+  - [src/redux/staking/stakeId.ts](mdc:src/redux/staking/stakeId.ts)
+
+- **Connection**:
+  - [src/redux/connection/token.ts](mdc:src/redux/connection/token.ts)
+  - [src/redux/connection/userAccount.ts](mdc:src/redux/connection/userAccount.ts)
+
+## Usage Pattern
+
+Components use the `useSelector` and `useDispatch` hooks to interact with the Redux store:
+
+```typescript
+// Example from a component
+const { prediction } = useSelector(
+  (state: { flipPrediction: { prediction: string } }) => state.flipPrediction,
+);
+const dispatch = useDispatch();
+
+// Dispatching an action
+dispatch(heads());
+```

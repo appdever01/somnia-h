@@ -1,0 +1,80 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# UI Components and Styling
+
+Somnia Pumpaz uses a combination of TailwindCSS and custom components for styling, with GSAP for animations.
+
+## Core UI Components
+
+- **Button**: [src/components/button.tsx](mdc:src/components/button.tsx)
+  - Reusable button component with multiple variants
+
+- **Header**: [src/components/common/header.tsx](mdc:src/components/common/header.tsx)
+  - Main navigation header with wallet connection
+
+- **Menu**: [src/components/common/menu.tsx](mdc:src/components/common/menu.tsx)
+  - Navigation menu with links to different sections
+
+- **Game Components**:
+  - Coin: [src/components/coin.tsx](mdc:src/components/coin.tsx)
+  - Die: [src/components/die.tsx](mdc:src/components/die.tsx)
+
+- **Staking Components**:
+  - StakeCard: [src/components/stakeCard.tsx](mdc:src/components/stakeCard.tsx)
+  - StakedCard: [src/components/stakedCard.tsx](mdc:src/components/stakedCard.tsx)
+
+- **Leaderboard**: [src/components/leaderboardCard.tsx](mdc:src/components/leaderboardCard.tsx)
+  - Card for displaying leaderboard entries
+
+## Styling
+
+The project uses TailwindCSS for styling, configured in [tailwind.config.ts](mdc:tailwind.config.ts).
+
+Global styles are defined in [src/app/globals.css](mdc:src/app/globals.css).
+
+Custom fonts used:
+- Geist Sans
+- Geist Mono
+- Additional custom fonts like Rubik and Unkempt referenced in components
+
+## Animations
+
+GSAP (GreenSock Animation Platform) is used for animations, particularly in the game components:
+
+```typescript
+// Example from coin flip game
+gsap.to(".coin", {
+  rotateY: "+=1440",
+  rotateX: "+=720",
+  rotateZ: "+=360",
+  duration: 4,
+  ease: "power4.in",
+  onComplete: () => {
+    gsap.to(".coin", {
+      rotateY: finalY,
+      rotateX: 0,
+      rotateZ: 0,
+      duration: 2,
+      ease: "power4.out",
+    });
+    setGameStatus("flipped")
+  }
+})
+```
+
+## Responsive Design
+
+The UI is designed to be responsive using TailwindCSS breakpoints:
+- Mobile-first approach
+- sm: 640px and above
+- lg: 1024px and above
+
+Example from components:
+```tsx
+<h1 className="font-rubik text-2xl leading-none text-white mb-6 text-center sm:text-3xl lg:text-5xl">
+  Coin Flip
+</h1>
+```
