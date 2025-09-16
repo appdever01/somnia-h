@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from '@/app/contracts/contract';
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from '@/app/contracts/contract';
 import { LoadingSpinner } from './loader';
 import { toast } from 'sonner';
 import { somniaTestnet } from 'wagmi/chains';
@@ -24,8 +24,8 @@ export default function AdminUsers() {
 
   // Get registered users
   const { data: registeredUsers } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getRegisteredUsers",
     args: [BigInt(currentPage), BigInt(pageSize)],
     chainId: somniaTestnet.id,
@@ -33,8 +33,8 @@ export default function AdminUsers() {
 
   // Get total users
   const { data: totalUsers } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getTotalUsers",
     chainId: somniaTestnet.id,
   });
@@ -55,8 +55,8 @@ export default function AdminUsers() {
     
     try {
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'addPoints',
         args: [selectedUser, BigInt(pointsToAdd)],
         chainId: somniaTestnet.id,
