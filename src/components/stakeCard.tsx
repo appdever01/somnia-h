@@ -61,18 +61,42 @@ export default function StakeCard(props: StakeCardPropTypes) {
   return (
     <div
       className={
-        "py-4 px-2 rounded-[0.25rem] flex flex-col gap-4 bg-[rgba(39,89,197,0.13)] hover:bg-[rgba(39,89,197,0.33)] duration-300 hover:cursor-pointer border-[#09378c] border origin-center stakecard min-w-20 lg:min-w-52" +
-        (stake_id === Number(props.id) ? " !bg-[rgba(39,89,197,1)]" : "")
+        "group relative overflow-hidden rounded-2xl p-6 text-center border-3 cursor-pointer transform transition-all duration-300 hover:scale-105 origin-center stakecard min-w-24 lg:min-w-60" +
+        (stake_id === Number(props.id)
+          ? " bg-gradient-to-r from-emerald-500 to-teal-600 border-emerald-400 text-white shadow-2xl scale-105"
+          : " bg-white/90 backdrop-blur-sm border-white/30 text-gray-800 hover:bg-white shadow-lg hover:shadow-xl")
       }
       ref={elementRef}
       onClick={toggleSelect}
     >
-      <p className="font-love text-white sm:text-2xl lg:text-4xl">
-        {props.duration} days
-      </p>
-      <p className="font-love text-[#71E092] text-sm sm:text-xl lg:text-[2rem]">
-        {props.apy}% APY
-      </p>
+      <div className="relative z-10">
+        <div className="text-4xl mb-4">
+          {props.duration <= 7 ? '⏰' : props.duration <= 30 ? '📅' : '🗺️'}
+        </div>
+        <div className="space-y-2">
+          <p className="font-bold text-2xl sm:text-3xl lg:text-4xl">
+            {props.duration} days
+          </p>
+          <div className="h-px bg-gradient-to-r from-transparent via-current to-transparent opacity-30"></div>
+          <p className={
+            "font-bold text-lg sm:text-xl lg:text-2xl" +
+            (stake_id === Number(props.id) ? " text-green-200" : " text-emerald-600")
+          }>
+            {props.apy}% APY
+          </p>
+        </div>
+        <div className="mt-4 text-sm opacity-75">
+          {stake_id === Number(props.id) ? '✅ Selected' : 'Click to select'}
+        </div>
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+      {stake_id === Number(props.id) && (
+        <div className="absolute top-2 right-2">
+          <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm font-bold">✓</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
