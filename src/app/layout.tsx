@@ -21,8 +21,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Somnia Pumpaz",
-  description: "The First MemeCoin-Powered Play2Earn Casino Gaming on the Somnia Network",
+  title: "Nexus Gaming",
+  description:
+    "The Ultimate Blockchain Gaming Platform for Play-to-Earn Casino Games",
 };
 
 export default function RootLayout({

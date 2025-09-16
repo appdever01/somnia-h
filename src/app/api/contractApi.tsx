@@ -1,7 +1,7 @@
-import { ethers, parseUnits } from 'ethers';
-import type * as ethersUtils from 'ethers';
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from '../contracts/contract';
-import { somniaTestnet } from 'wagmi/chains';
+import { ethers, parseUnits } from "ethers";
+import type * as ethersUtils from "ethers";
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from "../contracts/contract";
+import { somniaTestnet } from "wagmi/chains";
 // import { Log } from "ethers";
 
 // Add ethereum to window type
@@ -9,7 +9,7 @@ declare global {
   interface Window {
     ethereum?: any; //eslint-disable-line @typescript-eslint/no-explicit-any
   }
-};
+}
 
 // types
 
@@ -38,10 +38,10 @@ interface DiceHistory {
 // Create provider - in Next.js, we'll check for browser provider or use a fallback
 const getProvider = () => {
   // For client-side (browser)
-  if (typeof window !== 'undefined' && window.ethereum) {
+  if (typeof window !== "undefined" && window.ethereum) {
     return new ethers.BrowserProvider(window.ethereum);
   }
-  
+
   // For server-side or fallback
   return new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL);
 };
@@ -49,7 +49,7 @@ const getProvider = () => {
 // Get signer function
 const getSigner = async () => {
   const provider = getProvider();
-  
+
   // For client-side, get the connected wallet's signer
   if (provider instanceof ethers.BrowserProvider) {
     try {
@@ -60,7 +60,7 @@ const getSigner = async () => {
       throw error;
     }
   }
-  
+
   throw new Error("No signer available");
 };
 
@@ -69,10 +69,18 @@ const getContract = async (withSigner = true) => {
   try {
     if (withSigner) {
       const signer = await getSigner();
-      return new ethers.Contract(SOMNIA_PUMPAZ_ADDRESS, SOMNIA_PUMPAZ_ABI, signer);
+      return new ethers.Contract(
+        NEXUS_GAMING_ADDRESS,
+        NEXUS_GAMING_ABI,
+        signer
+      );
     } else {
       const provider = getProvider();
-      return new ethers.Contract(SOMNIA_PUMPAZ_ADDRESS, SOMNIA_PUMPAZ_ABI, provider);
+      return new ethers.Contract(
+        NEXUS_GAMING_ADDRESS,
+        NEXUS_GAMING_ABI,
+        provider
+      );
     }
   } catch (error) {
     console.error("Error getting contract instance:", error);
@@ -98,12 +106,13 @@ export const getReferralDetails = async (): Promise<{
 }> => {
   try {
     const contract = await getContract();
-    const [referralCode, referredUsers, earning] = await contract.getReferralDetails();
-    
+    const [referralCode, referredUsers, earning] =
+      await contract.getReferralDetails();
+
     return {
       referralCode,
       referredUsers: Number(referredUsers),
-      earning: Number(earning)
+      earning: Number(earning),
     };
   } catch (error) {
     console.error("Error getting referral details:", error);
@@ -111,17 +120,19 @@ export const getReferralDetails = async (): Promise<{
   }
 };
 
-export const getLeaderboard = async (limit: number = 100): Promise<{
+export const getLeaderboard = async (
+  limit: number = 100
+): Promise<{
   addresses: string[];
   points: number[];
 }> => {
   try {
     const contract = await getContract(false);
     const [addresses, points] = await contract.getLeaderboard(limit);
-    
+
     return {
       addresses: Array.from(addresses),
-      points: points.map((p: ethersUtils.BigNumberish) => Number(p))
+      points: points.map((p: ethersUtils.BigNumberish) => Number(p)),
     };
   } catch (error) {
     console.error("Error getting leaderboard:", error);
@@ -140,7 +151,9 @@ export const getUserRank = async (): Promise<number> => {
   }
 };
 
-export const getUserPoints = async (address: `0x${string}`): Promise<number> => {
+export const getUserPoints = async (
+  address: `0x${string}`
+): Promise<number> => {
   try {
     const contract = await getContract();
     const points = await contract.getUserPoints(address);
@@ -170,32 +183,32 @@ export const rollDice = async (
     const contract = await getContract();
     // Make sure amount is a valid number before parsing
     const amountInWei = parseUnits(amount.toString(), 18);
-    
+
     const tx = await contract.rollDice(selection, { value: amountInWei });
     const receipt = await tx.wait();
-    
+
     // Extract dice result from event
-    const event = receipt.logs
-      .find((log: any) => { //eslint-disable-line @typescript-eslint/no-explicit-any
-        try {
-          const parsedLog = contract.interface.parseLog({
-            topics: log.topics,
-            data: log.data
-          });
-          return parsedLog && parsedLog.name === "DiceFinished";
-        } catch {
-          return false;
-        }
-      });
-    
+    const event = receipt.logs.find((log: any) => {
+      //eslint-disable-line @typescript-eslint/no-explicit-any
+      try {
+        const parsedLog = contract.interface.parseLog({
+          topics: log.topics,
+          data: log.data,
+        });
+        return parsedLog && parsedLog.name === "DiceFinished";
+      } catch {
+        return false;
+      }
+    });
+
     if (event) {
       const parsedEvent = contract.interface.parseLog({
         topics: event.topics,
-        data: event.data
+        data: event.data,
       });
       if (parsedEvent && parsedEvent.args && parsedEvent.args.diceData) {
         const diceData = parsedEvent.args.diceData;
-        
+
         return {
           success: true,
           result: {
@@ -204,18 +217,21 @@ export const rollDice = async (
             dice2: Number(diceData.dice2),
             outcome: Number(diceData.outcome),
             payout: diceData.result ? ethers.formatEther(diceData.payout) : "0",
-            houseCharge: diceData.result ? ethers.formatEther(diceData.houseCharge) : "0"
-          }
+            houseCharge: diceData.result
+              ? ethers.formatEther(diceData.houseCharge)
+              : "0",
+          },
         };
       }
     }
-    
+
     return { success: true };
-  } catch (error: any) { //eslint-disable-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    //eslint-disable-line @typescript-eslint/no-explicit-any
     console.error("Error rolling dice:", error);
     return {
       success: false,
-      message: error.message || "Failed to roll dice"
+      message: error.message || "Failed to roll dice",
     };
   }
 };
@@ -228,7 +244,7 @@ export const getUserDiceHistory = async (
     const contract = await getContract();
     const signer = await getSigner();
     const address = await signer.getAddress();
-    
+
     return await contract.getUserDiceHistory(address, offset, limit);
   } catch (error) {
     console.error("Error getting user dice history:", error);
@@ -241,7 +257,7 @@ export const getUserDiceCount = async (): Promise<number> => {
     const contract = await getContract();
     const signer = await getSigner();
     const address = await signer.getAddress();
-    
+
     const count = await contract.getUserDiceCount(address);
     return Number(count);
   } catch (error) {
@@ -250,7 +266,10 @@ export const getUserDiceCount = async (): Promise<number> => {
   }
 };
 
-export const flipCoin = async (side: "heads" | "tails", amount: string): Promise<{
+export const flipCoin = async (
+  side: "heads" | "tails",
+  amount: string
+): Promise<{
   success: boolean;
   result?: {
     won: boolean;
@@ -261,98 +280,104 @@ export const flipCoin = async (side: "heads" | "tails", amount: string): Promise
   message?: string;
 }> => {
   try {
-    const hexChainId = '0x' + somniaTestnet.id.toString(16)
+    const hexChainId = "0x" + somniaTestnet.id.toString(16);
     const provider = getProvider();
     const network = await provider.getNetwork();
-    console.log("Network chainID: ", Number(network.chainId))
-    console.log("SomniaId: ", somniaTestnet.id)
+    console.log("Network chainID: ", Number(network.chainId));
+    console.log("SomniaId: ", somniaTestnet.id);
     if (Number(network.chainId) !== somniaTestnet.id) {
       try {
         await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: hexChainId }]
-        })
-        console.log("Switched to Somnia Testnet")
-      } catch (error: any) { //eslint-disable-line @typescript-eslint/no-explicit-any
-        console.error("An error occured switching: ", error)
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: hexChainId }],
+        });
+        console.log("Switched to Somnia Testnet");
+      } catch (error: any) {
+        //eslint-disable-line @typescript-eslint/no-explicit-any
+        console.error("An error occured switching: ", error);
         if (error.code === 4902) {
           try {
             await window.ethereum.request({
-              method: 'wallet_addEthereumChain',
-              params: [{
-                chainId: hexChainId,
-                chainName: 'Somnia Testnet',
-                nativeCurrency: {
-                  name: 'Somnia Token',
-                  symbol: 'STT',
-                  decimals: 18,
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: hexChainId,
+                  chainName: "Somnia Testnet",
+                  nativeCurrency: {
+                    name: "Somnia Token",
+                    symbol: "STT",
+                    decimals: 18,
+                  },
+                  rcpUrls: ["https://dream-rpc.somnia.network/"],
+                  blockExplorerUrls: [
+                    "https://shannon-explorer.somnia.network/",
+                  ],
                 },
-                rcpUrls: ['https://dream-rpc.somnia.network/'],
-                blockExplorerUrls: ['https://shannon-explorer.somnia.network/'],
-              }],
+              ],
             });
 
             //switch again after successful add
             await window.ethereum.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: hexChainId }]
-            })
-            console.log("Switched to Somnia Testnet")
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: hexChainId }],
+            });
+            console.log("Switched to Somnia Testnet");
           } catch (error) {
-            console.error("Failed to add network: ", error)
+            console.error("Failed to add network: ", error);
           }
         } else {
-          console.log("Failed to switch to Somnia Testnet")
+          console.log("Failed to switch to Somnia Testnet");
         }
       }
     }
     const contract = await getContract();
     // Make sure amount is a valid number before parsing
     const amountInWei = ethers.parseEther(amount.toString());
-    
+
     const tx = await contract.flip(side, { value: amountInWei });
     const receipt = await tx.wait();
-    
+
     // Extract flip result from event
-    const event = receipt.logs
-      .find((log: any) => { //eslint-disable-line @typescript-eslint/no-explicit-any
-        try {
-          const parsedLog = contract.interface.parseLog({
-            topics: log.topics,
-            data: log.data
-          });
-          return parsedLog && parsedLog.name === "FlipFinished";
-        } catch {
-          return false;
-        }
-      });
-    
+    const event = receipt.logs.find((log: any) => {
+      //eslint-disable-line @typescript-eslint/no-explicit-any
+      try {
+        const parsedLog = contract.interface.parseLog({
+          topics: log.topics,
+          data: log.data,
+        });
+        return parsedLog && parsedLog.name === "FlipFinished";
+      } catch {
+        return false;
+      }
+    });
+
     if (event) {
       const parsedEvent = contract.interface.parseLog({
         topics: event.topics,
-        data: event.data
+        data: event.data,
       });
       if (parsedEvent && parsedEvent.args && parsedEvent.args.flipData) {
         const flipData = parsedEvent.args.flipData;
-        
+
         return {
           success: true,
           result: {
             won: flipData.result,
             userGuess: flipData.guess ? "heads" : "tails",
             coinSide: flipData.side ? "heads" : "tails",
-            payout: flipData.result ? ethers.formatEther(flipData.payout) : "0"
-          }
+            payout: flipData.result ? ethers.formatEther(flipData.payout) : "0",
+          },
         };
       }
     }
-    
+
     return { success: true };
-  } catch (error: any) { //eslint-disable-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    //eslint-disable-line @typescript-eslint/no-explicit-any
     console.error("Error flipping coin:", error);
     return {
       success: false,
-      message: error.message || "Failed to flip coin"
+      message: error.message || "Failed to flip coin",
     };
   }
 };
@@ -365,7 +390,7 @@ export const getUserFlipHistory = async (
     const contract = await getContract();
     const signer = await getSigner();
     const address = await signer.getAddress();
-    
+
     return await contract.getUserFlipHistory(address, offset, limit);
   } catch (error) {
     console.error("Error getting user flip history:", error);
@@ -378,7 +403,7 @@ export const getUserFlipCount = async (): Promise<number> => {
     const contract = await getContract();
     const signer = await getSigner();
     const address = await signer.getAddress();
-    
+
     const count = await contract.getUserFlipCount(address);
     return Number(count);
   } catch (error) {
@@ -395,16 +420,18 @@ export const getClaimHistory = async (): Promise<{
     const contract = await getContract();
     const signer = await getSigner();
     const address = await signer.getAddress();
-    
-    const [amount, nextClaimTimestamp] = await contract.getClaimHistory(address);
-    
+
+    const [amount, nextClaimTimestamp] = await contract.getClaimHistory(
+      address
+    );
+
     const totalClaimed = ethers.formatEther(amount);
     let nextClaimTime = null;
-    
+
     if (nextClaimTimestamp.toString() !== "0") {
       nextClaimTime = new Date(Number(nextClaimTimestamp) * 1000);
     }
-    
+
     return { totalClaimed, nextClaimTime };
   } catch (error) {
     console.error("Error getting claim history:", error);

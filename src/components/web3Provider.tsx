@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { WagmiProvider, createConfig } from "wagmi";
 import { somniaTestnet } from "wagmi/chains";
@@ -20,18 +20,21 @@ const config = createConfig(
 
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
 
-    appName: "Somnia Pumpaz",
+    appName: "Nexus Gaming",
 
-    appDescription: "The First MemeCoin-Powered Play2Earn Casino Gaming on the Somnia Network",
+    appDescription:
+      "The Ultimate Blockchain Gaming Platform for Play-to-Earn Casino Games",
     appUrl: process.env.NEXT_PUBLIC_APP_URL!, // your app's url
     appIcon: "https://family.co/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
-  }),
+  })
 );
 
 const queryClient = new QueryClient();
 
-export default function Web3Provider({ children }: {
-    children: React.ReactNode
+export default function Web3Provider({
+  children,
+}: {
+  children: React.ReactNode;
 }) {
   return (
     <WagmiProvider config={config}>
@@ -43,4 +46,4 @@ export default function Web3Provider({ children }: {
       </QueryClientProvider>
     </WagmiProvider>
   );
-};
+}

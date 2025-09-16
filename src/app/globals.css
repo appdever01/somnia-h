@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Chicle&family=Love+Ya+Like+A+Sister&family=Patrick+Hand&family=Rubik+Burned&family=Unkempt:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Chicle&family=Love+Ya+Like+A+Sister&family=Patrick+Hand&family=Rubik+Burned&family=Unkempt:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -16,9 +16,8 @@
   }
 }
 
-
 :root {
-  --background: #c81cdc;
+  --background: #000;
   --foreground: #121212;
   --blueground: #2759c5;
   --bluetheme: #09378c;
@@ -42,7 +41,10 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
-
+html {
+  scroll-behavior: smooth;
+  overscroll-behavior: none;
+}
 body::-webkit-scrollbar {
   display: none;
 }
@@ -139,12 +141,7 @@ body::-webkit-scrollbar {
 
 .back::after {
   margin: -35px 0 0 -30px;
-  box-shadow:
-    40px 0,
-    0 25px,
-    40px 25px,
-    0 50px,
-    40px 50px;
+  box-shadow: 40px 0, 0 25px, 40px 25px, 0 50px, 40px 50px;
 }
 
 .top::after {
@@ -154,44 +151,17 @@ body::-webkit-scrollbar {
 
 .bottom::after {
   margin: -36px 0 0 -36px;
-  box-shadow:
-    26px 26px,
-    52px 52px,
-    52px 0,
-    0 52px;
+  box-shadow: 26px 26px, 52px 52px, 52px 0, 0 52px;
 }
 
 .right::after {
   margin: -30px 0 0 -30px;
-  box-shadow:
-    40px 0,
-    0 40px,
-    40px 40px;
+  box-shadow: 40px 0, 0 40px, 40px 40px;
 }
 
 .left::after {
   margin: -35px 0 0 -35px;
-  box-shadow:
-    25px 25px,
-    50px 50px;
-}
-
-.glowing-box {
-  background-color: #00000096;
-  filter: drop-shadow(0 0 10px rgb(0, 0, 0));
-  animation: pulse-drop-shadow 2s infinite alternate ease-in-out;
-}
-
-@keyframes pulse-drop-shadow {
-  0% {
-    filter: drop-shadow(0 0 10px rgb(0, 0, 0));
-  }
-  50% {
-    filter: drop-shadow(0 0 30px rgb(0, 0, 0));
-  }
-  100% {
-    filter: drop-shadow(0 0 10px rgb(0, 0, 0));
-  }
+  box-shadow: 25px 25px, 50px 50px;
 }
 
 @media screen and (min-width: 640px) {
@@ -251,4 +221,3 @@ body::-webkit-scrollbar {
     transform: rotateY(180deg);
   }
 }
-

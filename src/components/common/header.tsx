@@ -25,8 +25,8 @@ import { userAccountType } from "@/app/page";
 import { QueryObserverResult } from "@tanstack/react-query";
 import { getTokenBalance } from "@/app/api/contractApi";
 import {
-  SOMNIA_PUMPAZ_ABI,
-  SOMNIA_PUMPAZ_ADDRESS,
+  NEXUS_GAMING_ABI,
+  NEXUS_GAMING_ADDRESS,
 } from "@/app/contracts/contract";
 
 export default function Header() {
@@ -52,11 +52,11 @@ export default function Header() {
 
     try {
       if (currentChainId !== somniaTestnet.id) {
-        toast.message("Switching network to Somnia Testnet");
+        toast.message("Switching network to Nexus Network");
         switchChain({
           chainId: somniaTestnet.id,
         });
-        toast.success("You're now on Somnia Testnet");
+        toast.success("You're now on Nexus Network");
       }
     } catch {
       toast.error("Failed to switch network");
@@ -66,8 +66,8 @@ export default function Header() {
 
   // Check if user is owner
   const { data: contractOwner } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "owner",
     chainId: somniaTestnet.id,
     query: {
