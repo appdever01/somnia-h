@@ -12,7 +12,7 @@ export default function Button(props: buttonPropTypes) {
   return (
     <div
       className={
-        "border-2 rounded-2xl p-4 flex items-center justify-center gap-1 hover:cursor-pointer " +
+        "border border-orange-500/20 text-orange-500 hover:bg-orange-500/10 px-6 py-2.5 rounded font-mono text-sm transition-colors duration-200 flex items-center justify-center gap-2 hover:cursor-pointer " +
         `${props.className}`
       }
       onClick={props.onClick}
@@ -21,11 +21,12 @@ export default function Button(props: buttonPropTypes) {
         <Image
           src={props.image}
           alt={props.content + "icon"}
-          width={24}
-          height={24}
+          width={20}
+          height={20}
+          className="opacity-80"
         />
       )}
-      <p className="text-xs font-love sm:text-xl">{props.content}</p>
+      <span>{props.content}</span>
     </div>
   );
 }

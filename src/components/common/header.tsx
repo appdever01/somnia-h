@@ -8,28 +8,37 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { setMenuOpen } from "@/redux/menu/status";
 import ConnectButton from "../connectButton";
-import { useAccount, useBalance, useReadContract, useChainId, useSwitchChain } from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useReadContract,
+  useChainId,
+  useSwitchChain,
+} from "wagmi";
 import Wallet from "../wallet";
 import { setUserAccount } from "@/redux/connection/userAccount";
-import { BigNumberish, formatUnits, parseUnits } from 'ethers';
+import { BigNumberish, formatUnits, parseUnits } from "ethers";
 import { somniaTestnet } from "wagmi/chains";
 import { setPageLoading } from "@/redux/loader/pageLoader";
 import { toast } from "sonner";
 import { userAccountType } from "@/app/page";
 import { QueryObserverResult } from "@tanstack/react-query";
 import { getTokenBalance } from "@/app/api/contractApi";
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from "@/app/contracts/contract";
+import {
+  SOMNIA_PUMPAZ_ABI,
+  SOMNIA_PUMPAZ_ADDRESS,
+} from "@/app/contracts/contract";
 
 export default function Header() {
   const [isPending, startTransition] = useTransition();
   const [isOwner, setIsOwner] = useState(false);
-  const { address, isConnected, connector } = useAccount()
+  const { address, isConnected, connector } = useAccount();
   const { userAccount } = useSelector(
     (state: { userAccount: { userAccount: userAccountType } }) =>
-      state.userAccount,
+      state.userAccount
   );
   const { menuOpen } = useSelector(
-    (state: { menuOpen: { menuOpen: boolean } }) => state.menuOpen,
+    (state: { menuOpen: { menuOpen: boolean } }) => state.menuOpen
   );
   const menuTl = useRef<gsap.core.Timeline | null>(null);
   const hamburgerTl = useRef<gsap.core.Timeline | null>(null);
@@ -43,17 +52,17 @@ export default function Header() {
 
     try {
       if (currentChainId !== somniaTestnet.id) {
-        toast.message("Switching network to Somnia Testnet")
+        toast.message("Switching network to Somnia Testnet");
         switchChain({
-          chainId: somniaTestnet.id
-        })
-        toast.success("You're now on Somnia Testnet")
+          chainId: somniaTestnet.id,
+        });
+        toast.success("You're now on Somnia Testnet");
       }
     } catch {
-      toast.error("Failed to switch network")
+      toast.error("Failed to switch network");
       return;
     }
-  }, [isConnected])
+  }, [isConnected]);
 
   // Check if user is owner
   const { data: contractOwner } = useReadContract({
@@ -86,34 +95,46 @@ export default function Header() {
 
     getPumpazBalance();
     refetchSTTBalance();
-  }, [isConnected, address])
+  }, [isConnected, address]);
 
-  const { data: STTBalance, refetch: refetchSTTBalance }: {
-    data: undefined | {
-      value: BigNumberish,
-      decimals: number,
-    },
-    refetch: () => Promise<QueryObserverResult<{
-      value: BigNumberish,
-      decimals: number,
-    } | undefined, Error>>,
+  const {
+    data: STTBalance,
+    refetch: refetchSTTBalance,
+  }: {
+    data:
+      | undefined
+      | {
+          value: BigNumberish;
+          decimals: number;
+        };
+    refetch: () => Promise<
+      QueryObserverResult<
+        | {
+            value: BigNumberish;
+            decimals: number;
+          }
+        | undefined,
+        Error
+      >
+    >;
   } = useBalance({
     address,
     chainId: somniaTestnet.id,
     query: {
       enabled: !!address && isConnected,
-    }
+    },
   });
 
   useEffect(() => {
-    if (userAccount && !userAccount.balance || userAccount.balance === "") return;
+    if ((userAccount && !userAccount.balance) || userAccount.balance === "")
+      return;
     if (userAccount && userAccount.address == "") {
       getAddressInfo();
     }
     if (userAccount && userAccount.stt_balance === "") {
       getSTTBalance();
     }
-  }, [userAccount, STTBalance])
+  }, [userAccount, STTBalance]);
 
   useEffect(() => {
     if (!STTBalance) return;
@@ -123,8 +144,8 @@ export default function Header() {
 
   const formatBigNumber = (value: BigNumberish, decimals: number): number => {
     const formatted = formatUnits(value, decimals);
-    return parseFloat(formatted)
-  }
+    return parseFloat(formatted);
+  };
 
   const getAddressInfo = () => {
     if (!isConnected || !address) return;
@@ -140,7 +161,10 @@ export default function Header() {
   const getSTTBalance = () => {
     try {
       if (STTBalance) {
-        const formattedSTT = formatBigNumber(STTBalance.value, STTBalance.decimals);
+        const formattedSTT = formatBigNumber(
+          STTBalance.value,
+          STTBalance.decimals
+        );
 
         const account = { ...userAccount };
         if (formattedSTT) account.stt_balance = Number(formattedSTT);
@@ -161,24 +185,29 @@ export default function Header() {
 
         const account = { ...userAccount };
         if (formattedPumpaz) account.balance = Number(formattedPumpaz);
-        dispatch(setUserAccount(account))
+        dispatch(setUserAccount(account));
       }
     } catch (error) {
       console.error("Failed to fetch Pumpaz balance: ", error);
     }
     return null;
-  }
+  };
 
   const setAccount = async () => {
     if (!isConnected || !address) return;
     try {
       toast.message("Getting user account details");
-      if (userAccount && !userAccount.stt_balance || userAccount.stt_balance == 0) getSTTBalance();
-      if (userAccount && !userAccount.address || userAccount.address == "") getAddressInfo();
+      if (
+        (userAccount && !userAccount.stt_balance) ||
+        userAccount.stt_balance == 0
+      )
+        getSTTBalance();
+      if ((userAccount && !userAccount.address) || userAccount.address == "")
+        getAddressInfo();
     } catch (error) {
       console.error("set user account error: ", error);
     }
-  }
+  };
 
   useGSAP(() => {
     menuTl.current = gsap.timeline({ paused: true });
@@ -197,7 +226,7 @@ export default function Header() {
             ease: "back.out",
             duration: 0.3,
           },
-          0,
+          0
         );
     }
 
@@ -221,7 +250,7 @@ export default function Header() {
             translateY: "-8px",
             duration: 0.01,
           },
-          0.14,
+          0.14
         )
         .to(".outerLines", {
           scaleX: 2,
@@ -237,7 +266,7 @@ export default function Header() {
       hamburgerTl.current.restart();
       setTimeout(() => {
         dispatch(setMenuOpen(true));
-      }, 500)
+      }, 500);
     } else if (
       menuOpen &&
       menuTl.current != null &&
@@ -263,81 +292,82 @@ export default function Header() {
 
   return (
     <>
-    <header className="bg-foreground py-8 px-5 lg:px-12 lg:py-6 flex justify-between items-center w-screen fixed top-0 left-0 z-50">
-      <div
-        className="flex items-center gap-1 hover:cursor-pointer"
-        onClick={() => router.push("/")}
-      >
-        <p className="font-love text-white text-sm sm:text-lg lg:text-3xl">
-          NEXUS GAMING
-        </p>
-      </div>
-      <div
-        className="w-6 h-6 flex flex-col items-center justify-around hover:cursor-pointer lg:hidden"
-        onClick={toggleMenu}
-      >
-        <div className="w-[10px] h-[1px] rounded-sm bg-white hamLines outerLines line1"></div>
-        <div className="w-4 h-[1px] rounded-sm bg-white hamLines"></div>
-        <div className="w-[10px] h-[1px] rounded-sm bg-white hamLines outerLines line3"></div>
-      </div>
-      <nav className="flex items-center gap-4 max-lg:hidden">
-        <div
-          className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-          onClick={() => startTransition(() => router.push("/"))}
-        >
-          Home
-        </div>
-        <div
-          className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-          onClick={() => {
-            navigate("dice");
-          }}
-        >
-          Dice game
-        </div>
-        <div
-          className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-          onClick={() => {
-            navigate("coin");
-          }}
-        >
-          Coin flip
-        </div>
-        <div
-          className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-          onClick={() => {
-            navigate("staking");
-          }}
-        >
-          Staking
-        </div>
-        <div
-          className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-          onClick={() => {
-            navigate("farm");
-          }}
-        >
-          Farming
-        </div>
-        <div
-          className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-          onClick={() => {
-            navigate("leaderboard");
-          }}
-        >
-          Leaderboard
-        </div>
-        {isOwner && (
+      <header className="bg-black/90 backdrop-blur-sm py-4 flex justify-between items-center w-screen fixed top-0 left-0 z-50 border-b border-orange-500/10">
+        <div className="container mx-auto max-w-6xl px-4 flex justify-between items-center">
           <div
-            className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-            onClick={() => {
-              navigate("admin");
-            }}
+            className="flex items-center gap-1 hover:cursor-pointer"
+            onClick={() => router.push("/")}
           >
-            Admin
+            <p className="font-mono text-orange-500 text-sm sm:text-base lg:text-xl font-bold tracking-wider">
+              NEXUS GAMING
+            </p>
           </div>
-        )}
-        {/* <div
+          <div
+            className="w-6 h-6 flex flex-col items-center justify-around hover:cursor-pointer lg:hidden"
+            onClick={toggleMenu}
+          >
+            <div className="w-5 h-[2px] rounded-sm bg-orange-500 hamLines outerLines line1"></div>
+            <div className="w-5 h-[2px] rounded-sm bg-orange-500 hamLines"></div>
+            <div className="w-5 h-[2px] rounded-sm bg-orange-500 hamLines outerLines line3"></div>
+          </div>
+          <nav className="flex items-center gap-6 max-lg:hidden">
+            <div
+              className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
+              onClick={() => startTransition(() => router.push("/"))}
+            >
+              Home
+            </div>
+            <div
+              className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
+              onClick={() => {
+                navigate("dice");
+              }}
+            >
+              Dice game
+            </div>
+            <div
+              className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
+              onClick={() => {
+                navigate("coin");
+              }}
+            >
+              Coin flip
+            </div>
+            <div
+              className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
+              onClick={() => {
+                navigate("staking");
+              }}
+            >
+              Staking
+            </div>
+            <div
+              className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
+              onClick={() => {
+                navigate("farm");
+              }}
+            >
+              Farming
+            </div>
+            <div
+              className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
+              onClick={() => {
+                navigate("leaderboard");
+              }}
+            >
+              Leaderboard
+            </div>
+            {isOwner && (
+              <div
+                className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
+                onClick={() => {
+                  navigate("admin");
+                }}
+              >
+                Admin
+              </div>
+            )}
+            {/* <div
           className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
           onClick={() => {
             navigate("refer");
@@ -345,17 +375,18 @@ export default function Header() {
         >
           Invite Friends
         </div> */}
-      </nav>
-      {!isConnected ? (
-        <div className="max-lg:hidden">
-          <ConnectButton className="border-white text-white" />
+          </nav>
+          {!isConnected ? (
+            <div className="max-lg:hidden">
+              <ConnectButton className="border-white text-white" />
+            </div>
+          ) : (
+            <div className="max-lg:hidden">
+              <Wallet />
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="max-lg:hidden">
-          <Wallet />
-        </div>
-      )}
-    </header>
+      </header>
     </>
   );
 }
