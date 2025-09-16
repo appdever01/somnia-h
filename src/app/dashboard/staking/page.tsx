@@ -218,127 +218,235 @@ export default function Staking() {
   }
 
   return (
-    <main className="w-full flex flex-col gap-4 px-5 mb-24 lg:px-24">
-      <div className="bg-[#FFFFFF33] rounded-lg w-full p-4 max-w-7xl lg:bg-[#12121233] lg:p-16">
-        <h1 className="font-rubik text-2xl leading-8 text-center sm:text-3xl lg:text-5xl mb-6">
-          PUMPAZ STAKING
-        </h1>
-        <div className="rounded-[0.25rem] bg-foreground px-4 py-12 lg:px-16 lg:py-24">
-          <div className="flex flex-col gap-8 items-center">
-            <div className="flex flex-col gap-4 sm:w-[18rem] items-center lg:w-[31.25rem]">
-              <input
-                placeholder="Enter amount to stake"
-                value={value}
-                onChange={(e) => {
-                  setValue(e.target.value);
-                  dispatch(setStaking(e.target.value));
-                }}
-                type="number"
-                className="rounded-[0.25rem] w-full border border-[#09378c] focus:border-2 text-white bg-foreground p-4 font-unkempt no-spinner text-[10px] sm:text-sm lg:text-xl leading-3 appearance-none focus:outline-none hover:appearance-none focus:appearance-none"
-              />
-              <Button
-                content={status === "stake" ? "Stake" : "Staking..."}
-                className={
-                  "bg-background w-full border-background sm:max-lg:!py-3" +
-                  (staking && stake_id != 0
-                    ? ""
-                    : " opacity-50 hover:cursor-not-allowed pointer-events-none") +
-                  (status === "staking"
-                    ? " animate-pulse pointer-events-none"
-                    : "")
-                }
-                onClick={() => handleCreateStaking(stake_id, staking)}
-              />
-            </div>
-            {loading && (
-              <LoadingSpinner className="w-12 h-12 sm:w-24 sm:h-24 text-white" />
-            )}
-            {availableStakes &&
-              <div className="grid grid-cols-2 gap-4 w-fit sm:grid-cols-3">
-                {availableStakes.map((option, idx) => (
-                  <StakeCard
-                    duration={option.stakingDays}
-                    apy={option.apy}
-                    key={idx}
-                    id={option.id}
-                  />
-                ))}
-              </div>
-            }
-
-          </div>
+    <main className="w-full min-h-screen flex flex-col px-0 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-16 left-12 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/4 right-16 w-24 h-24 bg-emerald-300/20 rounded-full animate-bounce" style={{animationDelay: '1.2s'}}></div>
+          <div className="absolute bottom-1/3 left-1/6 w-20 h-20 bg-teal-300/20 rounded-full animate-pulse" style={{animationDelay: '2.1s'}}></div>
+          <div className="absolute bottom-20 right-1/5 w-36 h-36 bg-white/5 rounded-full animate-bounce" style={{animationDelay: '0.7s'}}></div>
+          <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-cyan-300/10 rounded-full animate-ping" style={{animationDelay: '3.2s'}}></div>
         </div>
       </div>
 
-      {isUserStakingsSuccess && userStakings && userStakings?.length > 0 ? (
-        <div className="bg-[#FFFFFF33] rounded-lg w-full p-4 max-w-7xl lg:bg-[#12121233] lg:p-16">
-          <div className="rounded-[0.25rem] bg-foreground px-4 py-12 lg:px-16 lg:py-24">
-            <p className="font-rubik text-bluetheme mb-8 sm:text-xl lg:text-4xl">
-              YOUR STAKES
-            </p>
-            <div className="flex gap-6 items-center mb-6">
-              <p
-                className={
-                  "font-love text-white text-sm sm:text-lg lg:text-2xl py-1 px-1 hover:cursor-pointer" +
-                  (stakesTab === "active" ? " border-b-2 border-b-blueground" : "")
-                }
-                onClick={() => setStakesTab("active")}
-              >
-                Active
-              </p>
-              <p
-                className={
-                  "font-love text-white text-sm sm:text-lg lg:text-2xl py-1 px-1 hover:cursor-pointer" +
-                  (stakesTab === "withdrawn"
-                    ? " border-b-2 border-b-blueground"
-                    : "")
-                }
-                onClick={() => setStakesTab("withdrawn")}
-              >
-                Withdrawn
-              </p>
+      {/* Header */}
+      <div className="relative z-10 w-full p-4 sm:p-6 lg:p-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-4 mb-6">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <span className="text-4xl">💰</span>
             </div>
-            <div className="flex flex-col gap-4">
-              {stakesTab === "active" ? (
-                userStakings.map((item, idx) => ({ item, idx }))
-                  .filter(({ item }) => item.active)
-                  .map(({ item: stake, idx: idx }) => (
-                    <StakedCard
-                      key={idx}
-                      id={idx}
-                      amount={formatBigNumber(stake.amount, 18)}
-                      apy={stake.apy}
-                      days={stake.stakingDays}
-                      earning={formatBigNumber(stake.earning, 18)}
-                      status={stake.active ? "active" : "completed"}
-                      end_date={stake.endDate}
+            <div className="text-left">
+              <h2 className="text-white font-bold text-2xl sm:text-3xl">PUMPAZ Staking</h2>
+              <p className="text-white/70 text-lg">Earn rewards by staking</p>
+            </div>
+          </div>
+          <h1 className="font-rubik text-4xl sm:text-5xl lg:text-7xl xl:text-8xl leading-none mb-4 text-center text-white drop-shadow-2xl">
+            💰 STAKE & EARN
+          </h1>
+          <p className="text-white/80 text-lg sm:text-xl lg:text-2xl font-light">
+            Lock your PUMPAZ • Earn high APY • Compound your wealth
+          </p>
+        </div>
+      </div>
+
+      {/* Main Staking Section */}
+      <div className="relative z-10 w-full flex-1 p-4 sm:p-6 lg:p-8">
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 sm:p-8 lg:p-12 border border-white/20 shadow-2xl mb-8">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-3xl"></div>
+            <div className="relative z-10">
+              {/* Staking Input Section */}
+              <div className="text-center mb-8">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+                  🌱 Start Staking
+                </h2>
+                <p className="text-white/80 text-lg mb-8">Enter the amount you want to stake and choose your plan</p>
+
+                <div className="max-w-2xl mx-auto space-y-6">
+                  {/* Amount Input */}
+                  <div className="relative">
+                    <label className="block text-white font-bold mb-3 text-left">
+                      💰 Stake Amount (PUMPAZ)
+                    </label>
+                    <div className="relative">
+                      <input
+                        placeholder="Enter amount to stake"
+                        value={value}
+                        onChange={(e) => {
+                          setValue(e.target.value);
+                          dispatch(setStaking(e.target.value));
+                        }}
+                        type="number"
+                        className="w-full rounded-2xl border-2 focus:border-3 bg-white/90 backdrop-blur-sm p-4 pl-12 font-medium text-lg text-gray-800 leading-normal appearance-none focus:outline-none border-white/30 focus:border-emerald-400 no-spinner shadow-lg transition-all duration-300 focus:shadow-xl"
+                      />
+                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-2xl">
+                        💰
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stake Button */}
+                  <div className="relative">
+                    <Button
+                      content={status === "stake" ? "💰 STAKE NOW!" : "💰 Staking..."}
+                      className={
+                        "relative overflow-hidden w-full border-0 text-white font-bold py-6 text-xl sm:text-2xl rounded-2xl shadow-2xl transform transition-all duration-300 group" +
+                        (staking && stake_id != 0
+                          ? " bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-700 hover:from-emerald-600 hover:via-teal-700 hover:to-cyan-800 hover:cursor-pointer hover:scale-105 hover:shadow-3xl"
+                          : " bg-gray-400 opacity-50 pointer-events-none cursor-not-allowed") +
+                        (status === "staking" ? " animate-pulse pointer-events-none" : "")
+                      }
+                      onClick={() => handleCreateStaking(stake_id, staking)}
                     />
-                  ))
-              ) : userStakings.filter((item) => item.claimed)
-                .length == 0 ? (
-                <p className="font-unkempt text-white text-center sm:text-2xl">
-                  No withdrawn stakes yet
-                </p>
-              ) : (
-                userStakings
-                  .filter((item) => item.claimed)
-                  .map((stake, id) => (
-                    <StakedCard
-                      key={id}
-                      id={stake.planId}
-                      amount={formatBigNumber(stake.amount, 18)}
-                      apy={stake.apy}
-                      days={stake.stakingDays}
-                      earning={formatBigNumber(stake.earning, 18)}
-                      status={"withdrawn"}
-                      end_date={stake.endDate}
-                    />
-                  ))
+                    {staking && stake_id != 0 && status !== "staking" && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none rounded-2xl"></div>
+                    )}
+                  </div>
+
+                  {/* Info Display */}
+                  {staking && stake_id != 0 && (
+                    <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-4 text-center">
+                      <p className="text-white font-medium">
+                        💰 Staking: <span className="font-bold">{staking} PUMPAZ</span> | ⏰ Plan ID: <span className="font-bold">{stake_id}</span>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Loading Spinner */}
+              {loading && (
+                <div className="flex justify-center mb-8">
+                  <LoadingSpinner className="w-16 h-16 text-white" />
+                </div>
+              )}
+
+              {/* Staking Plans */}
+              {availableStakes && (
+                <div className="mt-12">
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                      ⏰ Choose Your Staking Plan
+                    </h3>
+                    <p className="text-white/80 text-lg">Select the duration that suits your investment strategy</p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {availableStakes.map((option, idx) => (
+                      <StakeCard
+                        duration={option.stakingDays}
+                        apy={option.apy}
+                        key={idx}
+                        id={option.id}
+                      />
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           </div>
         </div>
-      ) : null}
+      </div>
+
+      {/* User Stakes Section */}
+      {isUserStakingsSuccess && userStakings && userStakings?.length > 0 && (
+        <div className="relative z-10 w-full p-4 sm:p-6 lg:p-8">
+          <div className="w-full max-w-7xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 sm:p-8 lg:p-12 border border-white/20 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-3xl"></div>
+              <div className="relative z-10">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+                    📈 Your Stakes
+                  </h2>
+                  <p className="text-white/80 text-lg">Manage your active and completed stakes</p>
+                </div>
+
+                {/* Tab Navigation */}
+                <div className="flex justify-center mb-8">
+                  <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-2 border border-white/30">
+                    <div className="flex gap-2">
+                      <button
+                        className={
+                          "px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105" +
+                          (stakesTab === "active"
+                            ? " bg-emerald-500 text-white shadow-lg"
+                            : " text-white/70 hover:text-white hover:bg-white/10")
+                        }
+                        onClick={() => setStakesTab("active")}
+                      >
+                        🟢 Active Stakes
+                      </button>
+                      <button
+                        className={
+                          "px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105" +
+                          (stakesTab === "withdrawn"
+                            ? " bg-emerald-500 text-white shadow-lg"
+                            : " text-white/70 hover:text-white hover:bg-white/10")
+                        }
+                        onClick={() => setStakesTab("withdrawn")}
+                      >
+                        🟡 Withdrawn
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stakes Grid */}
+                <div className="space-y-4">
+                  {stakesTab === "active" ? (
+                    userStakings.filter(item => item.active).length === 0 ? (
+                      <div className="text-center py-12">
+                        <div className="text-6xl mb-4">💼</div>
+                        <p className="text-white/70 text-xl">No active stakes yet</p>
+                        <p className="text-white/50 text-lg mt-2">Start staking above to earn rewards!</p>
+                      </div>
+                    ) : (
+                      userStakings.map((item, idx) => ({ item, idx }))
+                        .filter(({ item }) => item.active)
+                        .map(({ item: stake, idx: idx }) => (
+                          <StakedCard
+                            key={idx}
+                            id={idx}
+                            amount={formatBigNumber(stake.amount, 18)}
+                            apy={stake.apy}
+                            days={stake.stakingDays}
+                            earning={formatBigNumber(stake.earning, 18)}
+                            status={stake.active ? "active" : "completed"}
+                            end_date={stake.endDate}
+                          />
+                        ))
+                    )
+                  ) : userStakings.filter((item) => item.claimed).length === 0 ? (
+                    <div className="text-center py-12">
+                      <div className="text-6xl mb-4">📋</div>
+                      <p className="text-white/70 text-xl">No withdrawn stakes yet</p>
+                      <p className="text-white/50 text-lg mt-2">Complete your stakes to see them here</p>
+                    </div>
+                  ) : (
+                    userStakings
+                      .filter((item) => item.claimed)
+                      .map((stake, id) => (
+                        <StakedCard
+                          key={id}
+                          id={stake.planId}
+                          amount={formatBigNumber(stake.amount, 18)}
+                          apy={stake.apy}
+                          days={stake.stakingDays}
+                          earning={formatBigNumber(stake.earning, 18)}
+                          status={"withdrawn"}
+                          end_date={stake.endDate}
+                        />
+                      ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
