@@ -5,6 +5,8 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setStakeId } from "@/redux/staking/stakeId";
+import { FiClock, FiCalendar, FiGlobe } from "react-icons/fi";
+import { FiCheck } from "react-icons/fi";
 
 type StakeCardPropTypes = {
   duration: number;
@@ -14,7 +16,7 @@ type StakeCardPropTypes = {
 
 export default function StakeCard(props: StakeCardPropTypes) {
   const { stake_id } = useSelector(
-    (state: { stake_id: { stake_id: number } }) => state.stake_id,
+    (state: { stake_id: { stake_id: number } }) => state.stake_id
   );
   const selectTl = useRef<gsap.core.Timeline | null>(null);
   const elementRef = useRef(null);
@@ -50,10 +52,7 @@ export default function StakeCard(props: StakeCardPropTypes) {
     if (stake_id != Number(props.id) && selectTl.current != null) {
       selectTl.current.restart();
       selectOption();
-    } else if (
-      stake_id == Number(props.id) &&
-      selectTl.current != null
-    ) {
+    } else if (stake_id == Number(props.id) && selectTl.current != null) {
       selectTl.current.reverse();
       removeOption();
     }
@@ -61,39 +60,70 @@ export default function StakeCard(props: StakeCardPropTypes) {
   return (
     <div
       className={
-        "group relative overflow-hidden rounded-2xl p-6 text-center border-3 cursor-pointer transform transition-all duration-300 hover:scale-105 origin-center stakecard min-w-24 lg:min-w-60" +
+        "group relative overflow-hidden rounded-lg p-6 text-center cursor-pointer transition-all duration-300 " +
         (stake_id === Number(props.id)
-          ? " bg-gradient-to-r from-emerald-500 to-teal-600 border-emerald-400 text-white shadow-2xl scale-105"
-          : " bg-white/90 backdrop-blur-sm border-white/30 text-gray-800 hover:bg-white shadow-lg hover:shadow-xl")
+          ? "bg-black border border-orange-500 text-white"
+          : "bg-black border border-orange-500/20 hover:border-orange-500")
       }
       ref={elementRef}
       onClick={toggleSelect}
     >
       <div className="relative z-10">
-        <div className="text-4xl mb-4">
-          {props.duration <= 7 ? '⏰' : props.duration <= 30 ? '📅' : '🗺️'}
+        <div className="mb-6">
+          {props.duration <= 7 ? (
+            <FiClock className="w-8 h-8 text-orange-300 mx-auto" />
+          ) : props.duration <= 30 ? (
+            <FiCalendar className="w-8 h-8 text-orange-300 mx-auto" />
+          ) : (
+            <FiGlobe className="w-8 h-8 text-orange-300 mx-auto" />
+          )}
         </div>
-        <div className="space-y-2">
-          <p className="font-bold text-2xl sm:text-3xl lg:text-4xl">
-            {props.duration} days
-          </p>
-          <div className="h-px bg-gradient-to-r from-transparent via-current to-transparent opacity-30"></div>
-          <p className={
-            "font-bold text-lg sm:text-xl lg:text-2xl" +
-            (stake_id === Number(props.id) ? " text-green-200" : " text-emerald-600")
-          }>
-            {props.apy}% APY
-          </p>
+        <div className="space-y-4">
+          <div>
+            <p className={
+              "font-mono text-2xl font-bold" +
+              (stake_id === Number(props.id)
+                ? " text-white"
+                : " text-gray-300")
+            }>
+              {props.duration} days
+            </p>
+            <p className={
+              stake_id === Number(props.id)
+                ? "text-gray-300 text-sm mt-1"
+                : "text-gray-500 text-sm mt-1"
+            }>
+              Lock Period
+            </p>
+          </div>
+          <div className="h-px bg-orange-500/20"></div>
+          <div>
+            <p className="font-mono text-2xl font-bold text-orange-500">
+              {props.apy}% APY
+            </p>
+            <p className={
+              stake_id === Number(props.id)
+                ? "text-gray-300 text-sm mt-1"
+                : "text-gray-500 text-sm mt-1"
+            }>
+              Annual Return
+            </p>
+          </div>
         </div>
-        <div className="mt-4 text-sm opacity-75">
-          {stake_id === Number(props.id) ? '✅ Selected' : 'Click to select'}
+        <div className="mt-6 text-sm">
+          {stake_id === Number(props.id) ? (
+            <span className="text-white flex items-center justify-center gap-2">
+              <FiCheck className="w-4 h-4" /> Selected
+            </span>
+          ) : (
+            <span className="text-gray-400">Click to select</span>
+          )}
         </div>
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
       {stake_id === Number(props.id) && (
-        <div className="absolute top-2 right-2">
-          <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">✓</span>
+        <div className="absolute top-3 right-3">
+          <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+            <FiCheck className="w-4 h-4 text-white" />
           </div>
         </div>
       )}

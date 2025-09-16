@@ -93,7 +93,7 @@ export default function Header() {
   useEffect(() => {
     if (!isConnected || !address) return;
 
-    getPumpazBalance();
+    getNexBalance();
     refetchSTTBalance();
   }, [isConnected, address]);
 
@@ -176,7 +176,7 @@ export default function Header() {
     return null;
   };
 
-  const getPumpazBalance = async () => {
+  const getNexBalance = async () => {
     try {
       if (address) {
         const result = await getTokenBalance();
@@ -188,7 +188,7 @@ export default function Header() {
         dispatch(setUserAccount(account));
       }
     } catch (error) {
-      console.error("Failed to fetch Pumpaz balance: ", error);
+      console.error("Failed to fetch NEX balance: ", error);
     }
     return null;
   };

@@ -8,15 +8,19 @@ import { useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/loader";
 import { toast } from "sonner";
 import { useAccount, useChainId, useSwitchChain } from "wagmi";
-import { getLeaderboard, getUserRank, getUserPoints } from "@/app/api/contractApi";
+import {
+  getLeaderboard,
+  getUserRank,
+  getUserPoints,
+} from "@/app/api/contractApi";
 import { useSelector } from "react-redux";
 import { userAccountType } from "@/app/page";
 import { somniaTestnet } from "wagmi/chains";
 
 type leaderboardType = {
-  addresses: string[],
-  points: number[],
-}
+  addresses: string[];
+  points: number[];
+};
 
 export default function LeaderBoard() {
   const { address, isConnected } = useAccount();
@@ -28,7 +32,7 @@ export default function LeaderBoard() {
   const [pages, setPages] = useState<number>(1);
   const { userAccount } = useSelector(
     (state: { userAccount: { userAccount: userAccountType } }) =>
-      state.userAccount,
+      state.userAccount
   );
   const router = useRouter();
   const currentChainId = useChainId();
@@ -45,17 +49,17 @@ export default function LeaderBoard() {
 
     try {
       if (currentChainId !== somniaTestnet.id) {
-        toast.message("Switching network to Somnia Testnet")
+        toast.message("Switching network to Somnia Testnet");
         switchChain({
-          chainId: somniaTestnet.id
-        })
-        toast.success("You're now on Somnia Testnet")
+          chainId: somniaTestnet.id,
+        });
+        toast.success("You're now on Somnia Testnet");
       }
     } catch {
-      toast.error("Failed to switch network")
+      toast.error("Failed to switch network");
       return;
     }
-  }, [isConnected])
+  }, [isConnected]);
 
   useEffect(() => {
     if (isConnected) {
@@ -63,13 +67,13 @@ export default function LeaderBoard() {
       handleGetUserRank();
       handleGetUserPoints();
     }
-  }, [isConnected])
+  }, [isConnected]);
 
   useEffect(() => {
     if (leaderboard && userRank) {
       setLoading(false);
     }
-  }, [leaderboard, userRank])
+  }, [leaderboard, userRank]);
 
   const handleGetLeaderboard = async () => {
     try {
@@ -79,7 +83,7 @@ export default function LeaderBoard() {
       console.error("An error occured: ", error);
       toast.error("Failed to retrieve leaderboard data. Reload the page");
     }
-  }
+  };
 
   const handleGetUserRank = async () => {
     try {
@@ -104,84 +108,120 @@ export default function LeaderBoard() {
 
   useEffect(() => {
     if (!leaderboard) return;
-    setPages(
-      Math.ceil(
-        (leaderboard.addresses.length) / 10,
-      ),
-    );
+    setPages(Math.ceil(leaderboard.addresses.length / 10));
   }, [leaderboard]);
 
   return (
-    <main className="w-full px-5 flex flex-col items-center gap-8 mb-24">
-      <h1 className="font-rubik text-5xl text-center sm:text-3xl lg:text-5xl">
-        Wall of Fame
-      </h1>
-      {loading && <LoadingSpinner className="w-12 h-12 sm:w-24 sm:h-24" />}
-      {!loading && leaderboard && address && userRank && (
-        <div className="flex flex-col gap-4 w-full items-center">
-          <LeaderBoardCard
-            profilePic="/images/pumpaz.webp"
-            name={address}
-            points={userAccount.points ? userAccount.points : userPoints ? userPoints : 0}
-            rank={userRank}
-          />
-          <div className="flex flex-col gap-4 w-full lg:max-w-[40rem]">
-            <div className="w-full flex items-center justify-between">
-              <p className="font-love text-sm sm:text-2xl lg:text-4xl">
-                {} holders
-              </p>
-              <p className="font-unkempt text-xs sm:text-base lg:text-2xl">
-                (Top 100)
-              </p>
-            </div>
-            <div className="flex flex-col gap-1">
-              {Array.from({ length: leaderboard.addresses.length })
-              .slice((page - 1) * 10, (page * 10)).map((_, id) => (
-                <LeaderBoardCard
-                  profilePic="/images/pumpaz.webp"
-                  name={leaderboard.addresses[((page - 1) * 10) + id]}
-                  points={leaderboard.points[((page - 1) * 10) + id]}
-                  rank={((page - 1) * 10) + id + 1}
-                  key={id}
-                />
-              ))}
-            </div>
+    <main className="w-full min-h-screen flex flex-col bg-black relative overflow-hidden">
+      {/* Header */}
+      <div className="container mx-auto max-w-6xl px-4 py-8">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center">
+            <span className="text-orange-500 text-2xl">🏆</span>
+          </div>
+          <div>
+            <h2 className="font-mono font-bold text-lg sm:text-xl text-white">
+              Leaderboard
+            </h2>
+            <p className="text-gray-400 text-sm">Top 100 Players</p>
           </div>
         </div>
-      )}
-      <div className="flex items-center gap-4">
-        <div
-          className={
-            "w-6 h-6 rounded-lg bg-[#FFFFFF33] flex items-center justify-center hover:cursor-pointer" +
-            (page == 1 ? " opacity-50" : "")
-          }
-          onClick={() => (page > 1 ? setPage((a) => a - 1) : null)}
-        >
-          <Image
-            src="/icons/arrow-right.svg"
-            alt="previous"
-            width={6}
-            height={12}
-            className="rotate-180"
-          />
-        </div>
-        <div className="w-[3.3125rem] h-10 rounded-lg bg-[#FFFFFF33] py-1 px-2 font-unkempt text-2xl flex items-center justify-center">
-          {page}
-        </div>
-        <div
-          className={
-            "w-6 h-6 rounded-lg bg-[#FFFFFF33] flex items-center justify-center hover:cursor-pointer" +
-            (page == pages ? " opacity-50" : "")
-          }
-          onClick={() => (page < pages ? setPage((a) => a + 1) : null)}
-        >
-          <Image
-            src="/icons/arrow-right.svg"
-            alt="next"
-            width={6}
-            height={12}
-          />
-        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto max-w-6xl px-4">
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <LoadingSpinner className="w-8 h-8 text-orange-500" />
+          </div>
+        ) : leaderboard && address && userRank ? (
+          <div className="space-y-8">
+            {/* User's Rank */}
+            <div className="bg-black border border-orange-500/20 rounded-lg p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-orange-500/10 rounded-full flex items-center justify-center">
+                    <span className="text-orange-500 text-sm font-mono">
+                      YOU
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-mono text-white text-sm">
+                      {`${address.slice(0, 4)}...${address.slice(-4)}`}
+                    </p>
+                    <p className="text-gray-400 text-xs">
+                      {userAccount.points
+                        ? userAccount.points
+                        : userPoints
+                        ? userPoints
+                        : 0}{" "}
+                      Points
+                    </p>
+                  </div>
+                </div>
+                <div className="font-mono text-sm">
+                  {userRank === 1 ? (
+                    <span className="text-orange-500">🥇 1st</span>
+                  ) : userRank === 2 ? (
+                    <span className="text-gray-300">🥈 2nd</span>
+                  ) : userRank === 3 ? (
+                    <span className="text-orange-300">🥉 3rd</span>
+                  ) : (
+                    <span className="text-gray-400">#{userRank}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Leaderboard List */}
+            <div className="bg-black border border-orange-500/20 rounded-lg p-6">
+              <div className="space-y-4">
+                {Array.from({ length: leaderboard.addresses.length })
+                  .slice((page - 1) * 10, page * 10)
+                  .map((_, id) => (
+                    <LeaderBoardCard
+                      key={id}
+                      profilePic="/images/pumpaz.webp"
+                      name={leaderboard.addresses[(page - 1) * 10 + id]}
+                      points={leaderboard.points[(page - 1) * 10 + id]}
+                      rank={(page - 1) * 10 + id + 1}
+                    />
+                  ))}
+              </div>
+
+              {/* Pagination */}
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <button
+                  className={
+                    "px-3 py-2 rounded-lg font-mono text-sm transition-colors " +
+                    (page === 1
+                      ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                      : "bg-black border border-orange-500/20 text-white hover:bg-orange-500/10")
+                  }
+                  onClick={() => page > 1 && setPage((p) => p - 1)}
+                  disabled={page === 1}
+                >
+                  Previous
+                </button>
+                <div className="px-4 py-2 bg-black border border-orange-500/20 rounded-lg font-mono text-sm text-white">
+                  {page}
+                </div>
+                <button
+                  className={
+                    "px-3 py-2 rounded-lg font-mono text-sm transition-colors " +
+                    (page === pages
+                      ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                      : "bg-black border border-orange-500/20 text-white hover:bg-orange-500/10")
+                  }
+                  onClick={() => page < pages && setPage((p) => p + 1)}
+                  disabled={page === pages}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </main>
   );

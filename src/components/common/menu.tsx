@@ -13,7 +13,10 @@ import { setMenuOpen } from "@/redux/menu/status";
 // import Mint from "../mint";
 import { setUserAccount } from "@/redux/connection/userAccount";
 import { userAccountType } from "@/app/page";
-import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from "@/app/contracts/contract";
+import {
+  NEXUS_GAMING_ABI,
+  NEXUS_GAMING_ADDRESS,
+} from "@/app/contracts/contract";
 import { somniaTestnet } from "wagmi/chains";
 
 export default function Menu() {
@@ -21,13 +24,13 @@ export default function Menu() {
   const [isOwner, setIsOwner] = useState(false);
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const [, startTransition ] = useTransition();
+  const [, startTransition] = useTransition();
   const { menuOpen } = useSelector(
-    (state: { menuOpen: { menuOpen: boolean } }) => state.menuOpen,
+    (state: { menuOpen: { menuOpen: boolean } }) => state.menuOpen
   );
   const { userAccount } = useSelector(
     (state: { userAccount: { userAccount: userAccountType } }) =>
-      state.userAccount,
+      state.userAccount
   );
   const dropdownTl = useRef<gsap.core.Timeline | null>(null);
   const menuTl = useRef<gsap.core.Timeline | null>(null);
@@ -41,8 +44,8 @@ export default function Menu() {
     abi: NEXUS_GAMING_ABI,
     functionName: "owner",
     chainId: somniaTestnet.id,
-    query: {  
-      enabled: !!address && isConnected,  
+    query: {
+      enabled: !!address && isConnected,
     },
   });
 
@@ -90,7 +93,7 @@ export default function Menu() {
             translateY: "0",
             duration: 0.01,
           },
-          0.14,
+          0.14
         )
         .to(".hamLines", {
           scaleX: 1,
@@ -116,7 +119,7 @@ export default function Menu() {
             ease: "back.in",
             duration: 0.14,
           },
-          0,
+          0
         )
         .to(
           ".dropdown-arrow",
@@ -124,7 +127,7 @@ export default function Menu() {
             rotate: "180deg",
             duration: 0.01,
           },
-          0.14,
+          0.14
         )
         .to(
           ".dropdown-arrow",
@@ -133,7 +136,7 @@ export default function Menu() {
             ease: "back.out",
             duration: 0.15,
           },
-          0.14,
+          0.14
         );
     }
   }, [menuOpen]);
@@ -171,12 +174,14 @@ export default function Menu() {
   const handleDisconnect = async () => {
     try {
       disconnect();
-      dispatch(setUserAccount({
-        address: "",
-        balance: "",
-        stt_balance: "",
-        walletName: "",
-      }));
+      dispatch(
+        setUserAccount({
+          address: "",
+          balance: "",
+          stt_balance: "",
+          walletName: "",
+        })
+      );
       toggleDropdown();
     } catch (error) {
       console.error(error);
@@ -224,10 +229,16 @@ export default function Menu() {
                 My Balance
               </p>
               <p className="font-unkempt text-xs text-white text-nowrap">
-                {userAccount.balance ? Number(userAccount.balance).toFixed(4) : 0} PUMPAZ
+                {userAccount.balance
+                  ? Number(userAccount.balance).toFixed(4)
+                  : 0}{" "}
+                NEX
               </p>
               <p className="font-unkempt text-xs text-white text-nowrap">
-                {userAccount.stt_balance ? Number(userAccount.stt_balance).toFixed(4) : 0} STT
+                {userAccount.stt_balance
+                  ? Number(userAccount.stt_balance).toFixed(4)
+                  : 0}{" "}
+                STT
               </p>
             </div>
           </div>
@@ -255,7 +266,7 @@ export default function Menu() {
             content="Dice game"
             className="w-full text-white bg-foreground border-foreground"
             onClick={() => {
-              navigate("dice"); 
+              navigate("dice");
               toggleMenu();
             }}
           />
@@ -291,7 +302,10 @@ export default function Menu() {
               toggleMenu();
             }}
           />
-          <a href="https://somniapumpaz.gitbook.io/somniapumpaz-docs" target="_blank">
+          <a
+            href="https://somniapumpaz.gitbook.io/somniapumpaz-docs"
+            target="_blank"
+          >
             <Button
               content="Docs"
               className="w-full text-white bg-foreground border-foreground"

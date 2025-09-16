@@ -9,20 +9,20 @@ import { setUserAccount } from "@/redux/connection/userAccount";
 import { userAccountType } from "@/app/page";
 import { useDisconnect, useSwitchChain, useChainId } from "wagmi";
 import { somniaTestnet } from "wagmi/chains";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 
 export default function Wallet() {
   const [opened, setOpened] = useState(false);
   const dropdownTl = useRef<gsap.core.Timeline | null>(null);
   const { userAccount } = useSelector(
     (state: { userAccount: { userAccount: userAccountType } }) =>
-      state.userAccount,
+      state.userAccount
   );
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
   const chainId = useChainId();
   const { switchChain } = useSwitchChain();
-  
+
   const isWrongNetwork = chainId !== somniaTestnet.id;
 
   useGSAP(() => {
@@ -41,7 +41,7 @@ export default function Wallet() {
             ease: "back.in",
             duration: 0.14,
           },
-          0,
+          0
         )
         .to(
           ".dropdown-arrow-wallet",
@@ -49,7 +49,7 @@ export default function Wallet() {
             rotate: "180deg",
             duration: 0.01,
           },
-          0.14,
+          0.14
         )
         .to(
           ".dropdown-arrow-wallet",
@@ -58,7 +58,7 @@ export default function Wallet() {
             ease: "back.out",
             duration: 0.15,
           },
-          0.14,
+          0.14
         );
     }
   }, [userAccount]);
@@ -76,12 +76,14 @@ export default function Wallet() {
   const handleDisconnect = async () => {
     try {
       disconnect();
-      dispatch(setUserAccount({
-        address: "",
-        balance: "",
-        stt_balance: "",
-        walletName: "",
-      }));
+      dispatch(
+        setUserAccount({
+          address: "",
+          balance: "",
+          stt_balance: "",
+          walletName: "",
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -90,7 +92,7 @@ export default function Wallet() {
   const handleSwitchNetwork = async () => {
     try {
       if (switchChain) {
-       switchChain({ chainId: somniaTestnet.id });
+        switchChain({ chainId: somniaTestnet.id });
       }
     } catch (error) {
       console.error("Failed to switch network:", error);
@@ -98,9 +100,9 @@ export default function Wallet() {
     }
   };
 
-  const truncatedAddress = userAccount.address ? 
-    `${userAccount.address.slice(0, 4)}...${userAccount.address.slice(-4)}` : 
-    "";
+  const truncatedAddress = userAccount.address
+    ? `${userAccount.address.slice(0, 4)}...${userAccount.address.slice(-4)}`
+    : "";
 
   if (!userAccount.address) {
     return null;
@@ -119,14 +121,25 @@ export default function Wallet() {
         <>
           <div className="flex flex-col gap-1">
             <p className="font-unkempt text-xs text-white">
-              {userAccount.stt_balance ? Number(userAccount.stt_balance).toFixed(4) : '0'} STT
+              {userAccount.stt_balance
+                ? Number(userAccount.stt_balance).toFixed(4)
+                : "0"}{" "}
+              STT
             </p>
             <p className="font-unkempt text-xs text-white">
-              {userAccount.balance ? Number(userAccount.balance).toFixed(4) : '0'} PUMPAZ
+              {userAccount.balance
+                ? Number(userAccount.balance).toFixed(4)
+                : "0"}{" "}
+              NEX
             </p>
           </div>
           <div className="flex items-center gap-1 relative">
-            <Image src="/icons/wallet.svg" alt="wallet" width={24} height={24} />
+            <Image
+              src="/icons/wallet.svg"
+              alt="wallet"
+              width={24}
+              height={24}
+            />
             <span
               className="font-unkempt text-xs text-white"
               title={userAccount.address ? userAccount.address : ""}
