@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/loader";
 import { toast } from "sonner";
 import { useAccount, useReadContract, useWriteContract, useChainId, useSwitchChain } from "wagmi";
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from "@/app/contracts/contract";
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from "@/app/contracts/contract";
 import { BigNumberish, formatUnits, parseUnits } from "ethers";
 import { QueryObserverResult } from "@tanstack/react-query";
 import { setUserAccount } from "@/redux/connection/userAccount";
@@ -56,8 +56,8 @@ export default function Staking() {
     }[],
     isSuccess: boolean,
   } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getAllStakingPlans",
     chainId: somniaTestnet.id,
     query: {
@@ -80,8 +80,8 @@ export default function Staking() {
     }[],
     isSuccess: boolean,
   } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getUserStakings",
     chainId: somniaTestnet.id,
     args: [address],
@@ -94,8 +94,8 @@ export default function Staking() {
       data: undefined | number,
       isSuccess: boolean,
     } = useReadContract({
-      address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-      abi: SOMNIA_PUMPAZ_ABI,
+      address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+      abi: NEXUS_GAMING_ABI,
       functionName: "getUserStakingCount",
       chainId: somniaTestnet.id,
       args: [address],
@@ -121,8 +121,8 @@ export default function Staking() {
     refetch: () => Promise<QueryObserverResult<BigNumberish | undefined, Error>>,
     isSuccess: boolean
   } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "balanceOf",
     chainId: somniaTestnet.id,
     args: [address],
@@ -178,8 +178,8 @@ export default function Staking() {
       }
 
       await createStaking({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: "createStaking",
         args: [id, convertCoin(amount)],
       })
