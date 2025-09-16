@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from '@/app/contracts/contract';
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from '@/app/contracts/contract';
 import { toast } from 'sonner';
 import { parseUnits } from 'ethers';
 
@@ -46,8 +46,8 @@ export default function AdminFunctions() {
     
     try {
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'transferOwnership',
         args: [newOwnerAddress],
       });
@@ -62,8 +62,8 @@ export default function AdminFunctions() {
   const handleCancelOwnershipTransfer = async () => {
     try {
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'cancelOwnershipTransfer',
       });
       // Success toast will be shown after transaction confirmation
@@ -85,8 +85,8 @@ export default function AdminFunctions() {
       const amountInWei = parseUnits(depositAmount.toString(), 18);
       
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'depositTokensForClaims',
         args: [amountInWei],
       });
@@ -108,8 +108,8 @@ export default function AdminFunctions() {
       const pointsInWei = pointsAmount;
       
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'addPoints',
         args: [userAddress, pointsInWei],
       });
@@ -132,8 +132,8 @@ export default function AdminFunctions() {
       const withdrawInWei = parseUnits(withdrawAmount.toString(), 18);
       
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'withdrawSTT',
         args: [withdrawInWei],
       });
@@ -148,8 +148,8 @@ export default function AdminFunctions() {
   const handleWithdrawAllSTT = async () => {
     try {
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'withdrawAllSTT',
       });
       // Success toast will be shown after transaction confirmation
