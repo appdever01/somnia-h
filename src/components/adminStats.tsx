@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useReadContract, useAccount, usePublicClient } from 'wagmi';
 import { BigNumberish, formatUnits } from 'ethers';
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from '@/app/contracts/contract';
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from '@/app/contracts/contract';
 import StatCard from './statCard';
 import { LoadingSpinner } from './loader';
 import { somniaTestnet } from 'wagmi/chains';
@@ -41,48 +41,48 @@ export default function AdminStats() {
 
   // Get total registered users
   const { data: totalUsers } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getTotalUsers",
     chainId: somniaTestnet.id,
   });
 
   // Get contract STT balance
   const { data: contractBalance } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getSTTBalance",
     chainId: somniaTestnet.id,
   });
 
   // Get token balance
   const { data: tokenBalance } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getTokenBalance",
     chainId: somniaTestnet.id,
   });
 
   // Get total supply
   const { data: totalSupply } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "totalSupply",
     chainId: somniaTestnet.id,
   });
 
   // Get active staking plans
   const { data: activeStakingPlans } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getActiveStakingPlans",
     chainId: somniaTestnet.id,
   });
 
   // Get leaderboard (top 5 users)
   const { data: leaderboard } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getLeaderboard",
     args: [5],
     chainId: somniaTestnet.id,
@@ -125,8 +125,8 @@ export default function AdminStats() {
     try {
       // Call getAllStatistics function using publicClient
       const result = await publicClient.readContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'getAllStatistics',
         account: address
       });
@@ -177,8 +177,8 @@ export default function AdminStats() {
       let sttBalance: bigint;
       try {
         sttBalance = await publicClient.readContract({
-          address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-          abi: SOMNIA_PUMPAZ_ABI,
+          address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+          abi: NEXUS_GAMING_ABI,
           functionName: 'getSTTBalance',
           account: address
         }) as bigint;
@@ -191,8 +191,8 @@ export default function AdminStats() {
       let tokenBal: bigint;
       try {
         tokenBal = await publicClient.readContract({
-          address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-          abi: SOMNIA_PUMPAZ_ABI,
+          address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+          abi: NEXUS_GAMING_ABI,
           functionName: 'getTokenBalance',
           account: address
         }) as bigint;
