@@ -268,15 +268,8 @@ export default function Header() {
         className="flex items-center gap-1 hover:cursor-pointer"
         onClick={() => router.push("/")}
       >
-        <Image
-          src="/images/pumpaz.webp"
-          alt="logo"
-          width={45}
-          height={45}
-          className="sm:w-12"
-        />
         <p className="font-love text-white text-sm sm:text-lg lg:text-3xl">
-          SOMNIA PUMPAZ
+          NEXUS GAMING
         </p>
       </div>
       <div
@@ -293,14 +286,6 @@ export default function Header() {
           onClick={() => startTransition(() => router.push("/"))}
         >
           Home
-        </div>
-        <div
-          className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-          onClick={() => {
-            navigate("tasks");
-          }}
-        >
-          Tasks
         </div>
         <div
           className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
@@ -342,16 +327,6 @@ export default function Header() {
         >
           Leaderboard
         </div>
-        <a href="https://somniapumpaz.gitbook.io/somniapumpaz-docs" target="_blank">
-          <div
-            className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
-            onClick={() => {
-              navigate("tasks");
-            }}
-          >
-            Docs
-          </div>
-        </a>
         {isOwner && (
           <div
             className="w-fit text-white bg-foreground border-foreground font-love hover:cursor-pointer"
