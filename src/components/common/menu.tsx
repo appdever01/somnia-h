@@ -13,7 +13,7 @@ import { setMenuOpen } from "@/redux/menu/status";
 // import Mint from "../mint";
 import { setUserAccount } from "@/redux/connection/userAccount";
 import { userAccountType } from "@/app/page";
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from "@/app/contracts/contract";
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from "@/app/contracts/contract";
 import { somniaTestnet } from "wagmi/chains";
 
 export default function Menu() {
@@ -37,12 +37,12 @@ export default function Menu() {
 
   // Check if user is owner
   const { data: contractOwner } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "owner",
     chainId: somniaTestnet.id,
-    query: {
-      enabled: !!address && isConnected,
+    query: {  
+      enabled: !!address && isConnected,  
     },
   });
 
