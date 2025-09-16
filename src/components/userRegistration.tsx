@@ -80,8 +80,8 @@ export default function UserRegistration() {
     setIsLoading(true);
     try {
       await registerUser({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: "registerUser",
         args: [""],
         chainId: somniaTestnet.id,
