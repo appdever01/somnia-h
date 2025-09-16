@@ -17,7 +17,7 @@ Somnia Pumpaz integrates with the Somnia blockchain for wallet connectivity, sma
 ## Smart Contract Integration
 
 - Contract ABI and Address: [src/app/contracts/contract.ts](mdc:src/app/contracts/contract.ts)
-- Main contract: `SOMNIA_PUMPAZ_ABI` and `SOMNIA_PUMPAZ_ADDRESS`
+- Main contract: `NEXUS_GAMING_ABI` and `NEXUS_GAMING_ABI`
 
 ## Token Management
 
