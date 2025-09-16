@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from '@/app/contracts/contract';
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ADDRESS } from '@/app/contracts/contract';
 import { LoadingSpinner } from './loader';
 import { toast } from 'sonner';
 import { somniaTestnet } from 'wagmi/chains';
@@ -36,8 +36,8 @@ export default function AdminStakingPlans() {
 
   // Get all staking plans
   const { data: allPlans, refetch: refetchPlans } = useReadContract({
-    address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-    abi: SOMNIA_PUMPAZ_ABI,
+    address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+    abi: NEXUS_GAMING_ABI,
     functionName: "getAllStakingPlans",
     chainId: somniaTestnet.id,
   });
@@ -70,8 +70,8 @@ export default function AdminStakingPlans() {
     
     try {
       writeContract({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: 'addStakingPlan',
         args: [BigInt(stakingDays), BigInt(apy)],
       });
