@@ -2,7 +2,7 @@
 
 import Button from "./button";
 import { useAccount, useWriteContract, useChainId, useSwitchChain } from "wagmi";
-import { SOMNIA_PUMPAZ_ABI, SOMNIA_PUMPAZ_ADDRESS } from "@/app/contracts/contract";
+import { NEXUS_GAMING_ABI, NEXUS_GAMING_ABI } from "@/app/contracts/contract";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { setMintTime } from "@/redux/mint/mint";
@@ -67,8 +67,8 @@ export default function Mint(props: {
   //   refetch: () => Promise<QueryObserverResult<[boolean, number] | undefined, Error>>,
   //   isSuccess: boolean,
   // } = useReadContract({
-  //   address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-  //   abi: SOMNIA_PUMPAZ_ABI,
+  //   address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+  //   abi: NEXUS_GAMING_ABI,
   //   functionName: "getClaimStatus",
   //   args: [address],
   //   chainId: somniaTestnet.id,
@@ -228,8 +228,8 @@ export default function Mint(props: {
 
     try {
       await claimTokens({
-        address: SOMNIA_PUMPAZ_ADDRESS as `0x${string}`,
-        abi: SOMNIA_PUMPAZ_ABI,
+        address: NEXUS_GAMING_ADDRESS as `0x${string}`,
+        abi: NEXUS_GAMING_ABI,
         functionName: "claimTokens",
         args: [],
         chainId: somniaTestnet.id,
