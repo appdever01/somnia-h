@@ -188,8 +188,7 @@ export const rollDice = async (
     const receipt = await tx.wait();
 
     // Extract dice result from event
-    const event = receipt.logs.find((log: any) => {
-      //eslint-disable-line @typescript-eslint/no-explicit-any
+    const event = receipt.logs.find((log: { topics: string[]; data: string }) => {
       try {
         const parsedLog = contract.interface.parseLog({
           topics: log.topics,
@@ -226,12 +225,11 @@ export const rollDice = async (
     }
 
     return { success: true };
-  } catch (error: any) {
-    //eslint-disable-line @typescript-eslint/no-explicit-any
+  } catch (error: unknown) {
     console.error("Error rolling dice:", error);
     return {
       success: false,
-      message: error.message || "Failed to roll dice",
+      message: error instanceof Error ? error.message : "Failed to roll dice",
     };
   }
 };
@@ -292,10 +290,9 @@ export const flipCoin = async (
           params: [{ chainId: hexChainId }],
         });
         console.log("Switched to Somnia Testnet");
-      } catch (error: any) {
-        //eslint-disable-line @typescript-eslint/no-explicit-any
+      } catch (error: unknown) {
         console.error("An error occured switching: ", error);
-        if (error.code === 4902) {
+        if (error && typeof error === 'object' && 'code' in error && (error as { code: number }).code === 4902) {
           try {
             await window.ethereum.request({
               method: "wallet_addEthereumChain",
@@ -338,8 +335,7 @@ export const flipCoin = async (
     const receipt = await tx.wait();
 
     // Extract flip result from event
-    const event = receipt.logs.find((log: any) => {
-      //eslint-disable-line @typescript-eslint/no-explicit-any
+    const event = receipt.logs.find((log: { topics: string[]; data: string }) => {
       try {
         const parsedLog = contract.interface.parseLog({
           topics: log.topics,
@@ -372,12 +368,11 @@ export const flipCoin = async (
     }
 
     return { success: true };
-  } catch (error: any) {
-    //eslint-disable-line @typescript-eslint/no-explicit-any
+  } catch (error: unknown) {
     console.error("Error flipping coin:", error);
     return {
       success: false,
-      message: error.message || "Failed to flip coin",
+      message: error instanceof Error ? error.message : "Failed to flip coin",
     };
   }
 };
