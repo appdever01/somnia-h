@@ -199,7 +199,7 @@ export default function Menu() {
           <div className="bg-foreground flex items-center justify-between w-full p-5 rounded-t-lg">
             <div className="flex items-center gap-1 justify-between">
               <Image
-                src="/images/pumpaz.webp"
+                src="/images/nexus.webp"
                 alt="logo"
                 width={36}
                 height={36}
@@ -232,7 +232,7 @@ export default function Menu() {
                 {userAccount.balance
                   ? Number(userAccount.balance).toFixed(4)
                   : 0}{" "}
-                NEX
+                NEXUS
               </p>
               <p className="font-unkempt text-xs text-white text-nowrap">
                 {userAccount.stt_balance
@@ -287,14 +287,6 @@ export default function Menu() {
             }}
           />
           <Button
-            content="Farming"
-            className="w-full text-white bg-foreground border-foreground"
-            onClick={() => {
-              navigate("farm");
-              toggleMenu();
-            }}
-          />
-          <Button
             content="Leaderboard"
             className="w-full text-white bg-foreground border-foreground"
             onClick={() => {
@@ -303,7 +295,7 @@ export default function Menu() {
             }}
           />
           <a
-            href="https://somniapumpaz.gitbook.io/somniapumpaz-docs"
+            href="https://somnianexus.gitbook.io/somnianexus-docs"
             target="_blank"
           >
             <Button
