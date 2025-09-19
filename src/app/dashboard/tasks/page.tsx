@@ -216,7 +216,7 @@ export default function Tasks() {
   return (
     <main className="w-full px-5 flex flex-col items-center gap-8 mb-24">
       <h1 className="font-rubik text-center text-3xl lg:text-5xl">
-        SomniaPumpaz Tasks
+        SomniaNexus Tasks
       </h1>
       <h2 className="font-love lg:text-xl lg:max-w-3/5 lg:text-center">Get started by completing a few simple steps. Follow us on X and join our Discord community to earn 500 Points - it&apos;s fast, easy, and totally worth it.</h2>
 
@@ -292,14 +292,14 @@ export default function Tasks() {
                   <h3 className="font-love text-white lg:text-xl">Task 1: Follow us on X</h3>
                   <p className="font-unkempt text-white lg:text-lg">Stay in the loop with the latest updates, events, and drops.</p>
                   <a 
-                    href="https://twitter.com/SomniaPumpaz" 
+                    href="https://twitter.com/SomniaNexus" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className={
                       "bg-[rgba(39,89,197,0.13)] hover:bg-[rgba(39,89,197,0.33)] duration-300 p-4 rounded-lg text-center border border-[#09378c] hover:cursor-pointer flex justify-between items-center"
                     }
                   >
-                    <p className="font-unkempt text-white lg:text-lg">Follow <span className="text-background italic">@SomniaPumpaz</span></p>
+                    <p className="font-unkempt text-white lg:text-lg">Follow <span className="text-background italic">@SomniaNexus</span></p>
                     {taskStatus.x_claimed ? (
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#70ffb5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
                     ) : (
@@ -319,7 +319,7 @@ export default function Tasks() {
                       "bg-[rgba(39,89,197,0.13)] hover:bg-[rgba(39,89,197,0.33)] duration-300 p-4 rounded-lg text-center border border-[#09378c] hover:cursor-pointer flex justify-between items-center"
                     }
                   >
-                    <p className="font-unkempt text-white lg:text-lg">Join <span className="text-background italic">SomniaPumpaz Discord</span></p>
+                    <p className="font-unkempt text-white lg:text-lg">Join <span className="text-background italic">SomniaNexus Discord</span></p>
                     {taskStatus.discord_claimed ? (
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#70ffb5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
                     ) : (
