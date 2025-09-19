@@ -1,7 +1,6 @@
 "use client";
 
 import LeaderBoardCard from "@/components/leaderboardCard";
-import Image from "next/image";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -181,7 +180,7 @@ export default function LeaderBoard() {
                   .map((_, id) => (
                     <LeaderBoardCard
                       key={id}
-                      profilePic="/images/pumpaz.webp"
+                      profilePic="/images/nexus.webp"
                       name={leaderboard.addresses[(page - 1) * 10 + id]}
                       points={leaderboard.points[(page - 1) * 10 + id]}
                       rank={(page - 1) * 10 + id + 1}
