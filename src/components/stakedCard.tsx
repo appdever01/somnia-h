@@ -113,7 +113,7 @@ export default function StakedCard(props: StakedCardProps) {
           </div>
           <div>
             <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
-              {props.amount.toFixed(2)} NEX
+              {props.amount.toFixed(2)} NEXUS
             </h3>
             <p className="text-gray-600 text-sm">{props.days} days stake</p>
           </div>
@@ -145,7 +145,7 @@ export default function StakedCard(props: StakedCardProps) {
               Expected Earnings
             </p>
             <p className="text-emerald-800 text-xl sm:text-2xl font-bold">
-              {props.earning.toFixed(4)} NEX
+              {props.earning.toFixed(4)} NEXUS
             </p>
           </div>
           <div className="text-4xl">💎</div>
