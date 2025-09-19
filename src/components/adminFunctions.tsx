@@ -197,7 +197,7 @@ export default function AdminFunctions() {
         <h3 className="font-rubik text-lg text-white mb-4">Token Management</h3>
         
         <div className="mb-4">
-          <label className="block font-unkempt text-white mb-2">Deposit Amount (PUMPAZ)</label>
+          <label className="block font-unkempt text-white mb-2">Deposit Amount (NEXUS)</label>
           <input
             type="number"
             value={depositAmount}
