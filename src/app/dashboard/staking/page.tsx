@@ -140,8 +140,8 @@ export default function Staking() {
 
   const {
     data: nexBalance,
-    refetch: refetchPumpazBalance,
-    isSuccess: isPumpazBalanceSuccess,
+    refetch: refetchNexusBalance,
+    isSuccess: isNexusBalanceSuccess,
   }: {
     data: undefined | BigNumberish;
     refetch: () => Promise<
@@ -223,11 +223,11 @@ export default function Staking() {
         console.error("An error occured while tracking stake success: ", error);
       }
 
-      toast.success(`Successfully staked ${amount} NEX`);
+      toast.success(`Successfully staked ${amount} NEXUS`);
 
-      await refetchPumpazBalance();
+      await refetchNexusBalance();
       setTimeout(() => {
-        if (isPumpazBalanceSuccess && nexBalance) {
+        if (isNexusBalanceSuccess && nexBalance) {
           const formatted = formatBigNumber(nexBalance, 18);
           const account = {
             ...userAccount,
@@ -255,7 +255,7 @@ export default function Staking() {
           </div>
           <div>
             <h2 className="font-mono font-bold text-lg sm:text-xl text-white">
-              NEX Staking
+              NEXUS Staking
             </h2>
             <p className="text-gray-400 text-sm">Earn rewards by staking</p>
           </div>
@@ -265,7 +265,7 @@ export default function Staking() {
             Stake & Earn
           </h1>
           <p className="text-gray-400 text-lg sm:text-xl">
-            Lock your NEX • Earn high APY • Compound your wealth
+            Lock your NEXUS • Earn high APY • Compound your wealth
           </p>
         </div>
       </div>
@@ -287,7 +287,7 @@ export default function Staking() {
                 {/* Amount Input */}
                 <div className="relative">
                   <label className="block text-white font-mono text-sm mb-2">
-                    Stake Amount (NEX)
+                    Stake Amount (NEXUS)
                   </label>
                   <div className="relative">
                     <input
@@ -324,7 +324,7 @@ export default function Staking() {
                 {staking && stake_id != 0 && (
                   <div className="bg-black/50 border border-orange-500/20 rounded-lg p-4">
                     <p className="text-gray-400 font-mono text-sm">
-                      Staking: <span className="text-white">{staking} NEX</span>{" "}
+                      Staking: <span className="text-white">{staking} NEXUS</span>{" "}
                       | Plan ID: <span className="text-white">{stake_id}</span>
                     </p>
                   </div>
