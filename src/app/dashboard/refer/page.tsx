@@ -63,8 +63,8 @@ import { useRouter } from "next/navigation";
 
 //     navigator
 //       .share({
-//         title: "Join me on Somnia Pumpaz!",
-//         text: "Earn rewards by joining SomniaPumpaz on our journey to Pump Somnia to the Moon!",
+//         title: "Join me on Somnia Nexus!",
+//         text: "Earn rewards by joining SomniaNexus on our journey to Pump Somnia to the Moon!",
 //         url: `${process.env.NEXT_PUBLIC_BASE_URL_VERCEL}/?ref=${refDetails.referralCode}`,
 //       })
 //       .catch((error) => console.error("Sharing failed: ", error));
@@ -81,10 +81,10 @@ import { useRouter } from "next/navigation";
 //         </p>
 //         <h2 className="font-love text-xl lg:text-2xl w-full -mb-6">Refer</h2>
 //         <p className="font-unkempt">
-//           Invite your friends to join the SomniaPumpaz community and earn 1000
+//           Invite your friends to join the SomniaNexus community and earn 1000
 //           points for every referral! Share your unique link and start earning
 //           rewards today
-//           NOTE: To eliminate bot referrals, rewards will only be received once your referral interacts with the SomniaPumpaz platform
+//           NOTE: To eliminate bot referrals, rewards will only be received once your referral interacts with the SomniaNexus platform
 //         </p>
 
 //         <div className="flex justify-between items-center w-full">
