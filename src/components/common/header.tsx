@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useEffect, useRef, useTransition, useState } from "react";
@@ -181,14 +180,14 @@ export default function Header() {
       if (address) {
         const result = await getTokenBalance();
         const pump = parseUnits(result, 18);
-        const formattedPumpaz = formatBigNumber(pump, 18);
+        const formattedNexus = formatBigNumber(pump, 18);
 
         const account = { ...userAccount };
-        if (formattedPumpaz) account.balance = Number(formattedPumpaz);
+        if (formattedNexus) account.balance = Number(formattedNexus);
         dispatch(setUserAccount(account));
       }
     } catch (error) {
-      console.error("Failed to fetch NEX balance: ", error);
+      console.error("Failed to fetch NEXUS balance: ", error);
     }
     return null;
   };
@@ -340,14 +339,6 @@ export default function Header() {
               }}
             >
               Staking
-            </div>
-            <div
-              className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
-              onClick={() => {
-                navigate("farm");
-              }}
-            >
-              Farming
             </div>
             <div
               className="text-gray-400 hover:text-orange-500 font-medium text-sm transition-colors duration-200 hover:cursor-pointer"
