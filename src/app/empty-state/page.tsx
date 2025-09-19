@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Suspense, useEffect, useTransition } from "react"; //useRef
 import { useRouter } from "next/navigation"; //useSearchParams
 // import { userAccountType } from "../page";
