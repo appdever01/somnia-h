@@ -13,29 +13,29 @@ export default function AdminStats() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalUsers: 0,
-    totalPumpazMinted: '0',
+    totalNexusMinted: '0',
     contractBalance: '0',
     tokenBalance: '0',
     stakingPlans: 0,
     leaderboardTopUsers: [] as { address: string, points: number }[],
     // New game statistics
     walletsClaimedCount: 0,
-    pumpazClaimed: '0',
+    nexusClaimed: '0',
     walletsPlayedDiceCount: 0,
     diceGamesPlayedCount: 0,
-    pumpazWonOnDice: '0',
-    pumpazWageredOnDice: '0',
+    nexusWonOnDice: '0',
+    nexusWageredOnDice: '0',
     walletsPlayedFlipCount: 0,
     flipGamesPlayedCount: 0,
-    pumpazWonOnFlip: '0',
-    pumpazWageredOnFlip: '0',
+    nexusWonOnFlip: '0',
+    nexusWageredOnFlip: '0',
     // Staking statistics
     stakingsCount: 0,
     stakingsActiveCount: 0,
     stakingsClaimedCount: 0,
     stakingsInactiveCount: 0,
-    pumpazStaked: '0',
-    pumpazWithdrawnFromStaking: '0',
+    nexusStaked: '0',
+    nexusWithdrawnFromStaking: '0',
     stakingsEarnings: '0'
   });
 
@@ -98,23 +98,23 @@ export default function AdminStats() {
   type GameStatistics = {
     [key: number]: bigint | string;
     walletsClaimedCount?: bigint;
-    pumpazMinted?: bigint;
-    pumpazClaimed?: bigint;
+    nexusMinted?: bigint;
+    nexusClaimed?: bigint;
     walletsPlayedDiceCount?: bigint;
     diceGamesPlayedCount?: bigint;
-    pumpazWonOnDice?: bigint;
-    pumpazWageredOnDice?: bigint;
+    nexusWonOnDice?: bigint;
+    nexusWageredOnDice?: bigint;
     walletsPlayedFlipCount?: bigint;
     flipGamesPlayedCount?: bigint;
-    pumpazWonOnFlip?: bigint;
-    pumpazWageredOnFlip?: bigint;
+    nexusWonOnFlip?: bigint;
+    nexusWageredOnFlip?: bigint;
     // Staking statistics
     stakingsCount?: bigint;
     stakingsActiveCount?: bigint;
     stakingsClaimedCount?: bigint;
     stakingsInactiveCount?: bigint;
-    pumpazStaked?: bigint;
-    pumpazWithdrawnFromStaking?: bigint;
+    nexusStaked?: bigint;
+    nexusWithdrawnFromStaking?: bigint;
     stakingsEarnings?: bigint;
   };
   
@@ -140,24 +140,24 @@ export default function AdminStats() {
         
         // Map based on the expected order from the contract
         stats.walletsClaimedCount = BigInt(arrayLike[0] || 0);
-        stats.pumpazMinted = BigInt(arrayLike[1] || 0);
-        stats.pumpazClaimed = BigInt(arrayLike[2] || 0);
+        stats.nexusMinted = BigInt(arrayLike[1] || 0);
+        stats.nexusClaimed = BigInt(arrayLike[2] || 0);
         stats.walletsPlayedDiceCount = BigInt(arrayLike[3] || 0);
         stats.diceGamesPlayedCount = BigInt(arrayLike[4] || 0);
-        stats.pumpazWonOnDice = BigInt(arrayLike[5] || 0);
-        stats.pumpazWageredOnDice = BigInt(arrayLike[6] || 0);
+        stats.nexusWonOnDice = BigInt(arrayLike[5] || 0);
+        stats.nexusWageredOnDice = BigInt(arrayLike[6] || 0);
         stats.walletsPlayedFlipCount = BigInt(arrayLike[7] || 0);
         stats.flipGamesPlayedCount = BigInt(arrayLike[8] || 0);
-        stats.pumpazWonOnFlip = BigInt(arrayLike[9] || 0);
-        stats.pumpazWageredOnFlip = BigInt(arrayLike[10] || 0);
+        stats.nexusWonOnFlip = BigInt(arrayLike[9] || 0);
+        stats.nexusWageredOnFlip = BigInt(arrayLike[10] || 0);
         
         // Staking statistics
         stats.stakingsCount = BigInt(arrayLike[11] || 0);
         stats.stakingsActiveCount = BigInt(arrayLike[12] || 0);
         stats.stakingsClaimedCount = BigInt(arrayLike[13] || 0);
         stats.stakingsInactiveCount = BigInt(arrayLike[14] || 0);
-        stats.pumpazStaked = BigInt(arrayLike[15] || 0);
-        stats.pumpazWithdrawnFromStaking = BigInt(arrayLike[16] || 0);
+        stats.nexusStaked = BigInt(arrayLike[15] || 0);
+        stats.nexusWithdrawnFromStaking = BigInt(arrayLike[16] || 0);
         stats.stakingsEarnings = BigInt(arrayLike[17] || 0);
       }
       
@@ -254,42 +254,42 @@ export default function AdminStats() {
           stakingsInactiveCount: gameStatistics?.stakingsInactiveCount ? Number(gameStatistics.stakingsInactiveCount) : 0,
           
           // BigInt values that need to be formatted
-          pumpazMinted: gameStatistics?.pumpazMinted ? formatUnits(gameStatistics.pumpazMinted as BigNumberish, 18) : '0',
-          pumpazClaimed: gameStatistics?.pumpazClaimed ? formatUnits(gameStatistics.pumpazClaimed as BigNumberish, 18) : '0',
-          pumpazWonOnDice: gameStatistics?.pumpazWonOnDice ? formatUnits(gameStatistics.pumpazWonOnDice as BigNumberish, 18) : '0',
-          pumpazWageredOnDice: gameStatistics?.pumpazWageredOnDice ? formatUnits(gameStatistics.pumpazWageredOnDice as BigNumberish, 18) : '0',
-          pumpazWonOnFlip: gameStatistics?.pumpazWonOnFlip ? formatUnits(gameStatistics.pumpazWonOnFlip as BigNumberish, 18) : '0',
-          pumpazWageredOnFlip: gameStatistics?.pumpazWageredOnFlip ? formatUnits(gameStatistics.pumpazWageredOnFlip as BigNumberish, 18) : '0',
-          pumpazStaked: gameStatistics?.pumpazStaked ? formatUnits(gameStatistics.pumpazStaked as BigNumberish, 18) : '0',
-          pumpazWithdrawnFromStaking: gameStatistics?.pumpazWithdrawnFromStaking ? formatUnits(gameStatistics.pumpazWithdrawnFromStaking as BigNumberish, 18) : '0',
+          nexusMinted: gameStatistics?.nexusMinted ? formatUnits(gameStatistics.nexusMinted as BigNumberish, 18) : '0',
+          nexusClaimed: gameStatistics?.nexusClaimed ? formatUnits(gameStatistics.nexusClaimed as BigNumberish, 18) : '0',
+          nexusWonOnDice: gameStatistics?.nexusWonOnDice ? formatUnits(gameStatistics.nexusWonOnDice as BigNumberish, 18) : '0',
+          nexusWageredOnDice: gameStatistics?.nexusWageredOnDice ? formatUnits(gameStatistics.nexusWageredOnDice as BigNumberish, 18) : '0',
+          nexusWonOnFlip: gameStatistics?.nexusWonOnFlip ? formatUnits(gameStatistics.nexusWonOnFlip as BigNumberish, 18) : '0',
+          nexusWageredOnFlip: gameStatistics?.nexusWageredOnFlip ? formatUnits(gameStatistics.nexusWageredOnFlip as BigNumberish, 18) : '0',
+          nexusStaked: gameStatistics?.nexusStaked ? formatUnits(gameStatistics.nexusStaked as BigNumberish, 18) : '0',
+          nexusWithdrawnFromStaking: gameStatistics?.nexusWithdrawnFromStaking ? formatUnits(gameStatistics.nexusWithdrawnFromStaking as BigNumberish, 18) : '0',
           stakingsEarnings: gameStatistics?.stakingsEarnings ? formatUnits(gameStatistics.stakingsEarnings as BigNumberish, 18) : '0'
         };
         
         setStats({
           totalUsers: totalUsers ? Number(totalUsers) : 0,
-          totalPumpazMinted: totalSupply ? formatUnits(totalSupply as BigNumberish, 18) : '0',
+          totalNexusMinted: totalSupply ? formatUnits(totalSupply as BigNumberish, 18) : '0',
           contractBalance: balances?.contractBalance ? formatUnits(balances.contractBalance as BigNumberish, 18) : '0',
           tokenBalance: balances?.tokenBalance ? formatUnits(balances.tokenBalance as BigNumberish, 18) : '0',
           stakingPlans: activeStakingPlans && Array.isArray(activeStakingPlans) ? activeStakingPlans.length : 0,
           leaderboardTopUsers: leaderboardData,
           // Game statistics
           walletsClaimedCount: gameStats.walletsClaimedCount,
-          pumpazClaimed: gameStats.pumpazClaimed,
+          nexusClaimed: gameStats.nexusClaimed,
           walletsPlayedDiceCount: gameStats.walletsPlayedDiceCount,
           diceGamesPlayedCount: gameStats.diceGamesPlayedCount,
-          pumpazWonOnDice: gameStats.pumpazWonOnDice,
-          pumpazWageredOnDice: gameStats.pumpazWageredOnDice,
+          nexusWonOnDice: gameStats.nexusWonOnDice,
+          nexusWageredOnDice: gameStats.nexusWageredOnDice,
           walletsPlayedFlipCount: gameStats.walletsPlayedFlipCount,
           flipGamesPlayedCount: gameStats.flipGamesPlayedCount,
-          pumpazWonOnFlip: gameStats.pumpazWonOnFlip,
-          pumpazWageredOnFlip: gameStats.pumpazWageredOnFlip,
+          nexusWonOnFlip: gameStats.nexusWonOnFlip,
+          nexusWageredOnFlip: gameStats.nexusWageredOnFlip,
           // Staking statistics
           stakingsCount: gameStats.stakingsCount,
           stakingsActiveCount: gameStats.stakingsActiveCount,
           stakingsClaimedCount: gameStats.stakingsClaimedCount,
           stakingsInactiveCount: gameStats.stakingsInactiveCount,
-          pumpazStaked: gameStats.pumpazStaked,
-          pumpazWithdrawnFromStaking: gameStats.pumpazWithdrawnFromStaking,
+          nexusStaked: gameStats.nexusStaked,
+          nexusWithdrawnFromStaking: gameStats.nexusWithdrawnFromStaking,
           stakingsEarnings: gameStats.stakingsEarnings
         });
         
@@ -331,8 +331,8 @@ export default function AdminStats() {
           value={stats.totalUsers.toLocaleString()}
         />
         <StatCard 
-          title="PUMPAZ Minted" 
-          value={parseFloat(stats.totalPumpazMinted).toLocaleString()}
+          title="NEXUS Minted" 
+          value={parseFloat(stats.totalNexusMinted).toLocaleString()}
         />
         <StatCard 
           title="Contract STT Balance" 
@@ -347,12 +347,12 @@ export default function AdminStats() {
           value={stats.stakingPlans.toString()}
         />
         <StatCard 
-          title="Wallets Claimed PUMPAZ" 
+          title="Wallets Claimed NEXUS" 
           value={stats.walletsClaimedCount.toLocaleString()}
         />
         <StatCard 
-          title="PUMPAZ Claimed" 
-          value={parseFloat(stats.pumpazClaimed).toLocaleString()}
+          title="NEXUS Claimed" 
+          value={parseFloat(stats.nexusClaimed).toLocaleString()}
         />
       </div>
       
@@ -370,11 +370,11 @@ export default function AdminStats() {
           />
           <StatCard 
             title="STT Won on Dice" 
-            value={parseFloat(stats.pumpazWonOnDice).toLocaleString()}
+            value={parseFloat(stats.nexusWonOnDice).toLocaleString()}
           />
           <StatCard 
             title="STT Wagered on Dice" 
-            value={parseFloat(stats.pumpazWageredOnDice).toLocaleString()}
+            value={parseFloat(stats.nexusWageredOnDice).toLocaleString()}
           />
         </div>
       </div>
@@ -393,11 +393,11 @@ export default function AdminStats() {
           />
           <StatCard 
             title="STT Won on Flip" 
-            value={parseFloat(stats.pumpazWonOnFlip).toLocaleString()}
+            value={parseFloat(stats.nexusWonOnFlip).toLocaleString()}
           />
           <StatCard 
             title="STT Wagered on Flip" 
-            value={parseFloat(stats.pumpazWageredOnFlip).toLocaleString()}
+            value={parseFloat(stats.nexusWageredOnFlip).toLocaleString()}
           />
         </div>
       </div>
@@ -423,12 +423,12 @@ export default function AdminStats() {
             value={stats.stakingsInactiveCount.toLocaleString()}
           />
           <StatCard 
-            title="PUMPAZ Staked" 
-            value={parseFloat(stats.pumpazStaked).toLocaleString()}
+            title="NEXUS Staked" 
+            value={parseFloat(stats.nexusStaked).toLocaleString()}
           />
           <StatCard 
-            title="PUMPAZ Withdrawn from Staking" 
-            value={parseFloat(stats.pumpazWithdrawnFromStaking).toLocaleString()}
+            title="NEXUS Withdrawn from Staking" 
+            value={parseFloat(stats.nexusWithdrawnFromStaking).toLocaleString()}
           />
           <StatCard 
             title="Total Staking Earnings" 
