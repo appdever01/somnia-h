@@ -591,7 +591,7 @@ export default function CoinFlip() {
                       ) : (
                         <div className="bg-zinc-800/80 backdrop-blur rounded-xl p-6">
                           <p className="text-zinc-400">
-                            Don't give up! Every flip is a new chance.
+                            Don&apos;t give up! Every flip is a new chance.
                           </p>
                         </div>
                       )}
