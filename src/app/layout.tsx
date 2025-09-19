@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/images/pumpazLogo.webp" />
+        <link rel="icon" href="/images/nexusLogo.webp" />
         <GoogleAnalytics />
       </head>
       <body
