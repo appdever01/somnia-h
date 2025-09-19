@@ -130,7 +130,7 @@ export default function Wallet() {
               {userAccount.balance
                 ? Number(userAccount.balance).toFixed(4)
                 : "0"}{" "}
-              NEX
+              NEXUS
             </p>
           </div>
           <div className="flex items-center gap-1 relative">
