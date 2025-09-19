@@ -27,7 +27,7 @@ export default function Coin(props: { className?: string }) {
         <div className="text-2xl sm:text-3xl font-bold leading-tight">
           <div className="text-yellow-300 text-4xl mb-1">🪙</div>
           <div>Somnia</div>
-          <div>Pumpaz</div>
+          <div>Nexus</div>
         </div>
         <div className="absolute inset-2 border border-purple-300 rounded-full opacity-50"></div>
       </div>
