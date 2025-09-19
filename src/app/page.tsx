@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setPageLoading } from "@/redux/loader/pageLoader";
+import { useAccount } from "wagmi";
+import Mint from "@/components/mint";
 
 export type userAccountType = {
   address: string;
@@ -14,6 +16,7 @@ export type userAccountType = {
 
 export default function Home() {
   const dispatch = useDispatch();
+  const { isConnected } = useAccount();
 
   useEffect(() => {
     dispatch(setPageLoading(false));
@@ -46,9 +49,18 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button className="bg-orange-500 hover:bg-orange-600 text-black px-6 py-2.5 rounded font-mono text-sm transition-colors duration-200">
-                  Start Playing
-                </button>
+                {isConnected ? (
+                  <Mint
+                    bg="orange-500"
+                    text="white"
+                    border="orange-500"
+                    className="px-6 py-2.5 rounded font-mono text-sm transition-colors duration-200 hover:bg-orange-600"
+                  />
+                ) : (
+                  <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded font-mono text-sm transition-colors duration-200">
+                    Start Playing
+                  </button>
+                )}
                 <button className="border border-orange-500/20 text-orange-500 hover:bg-orange-500/10 px-6 py-2.5 rounded font-mono text-sm transition-colors duration-200">
                   Learn More
                 </button>
